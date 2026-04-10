@@ -1,0 +1,22 @@
+[build]
+  publish = "."
+
+[[redirects]]
+  from = "/catalogo"
+  to = "/catalogo.html"
+  status = 200
+
+[[redirects]]
+  from = "/productos"
+  to = "/products.html"
+  status = 200
+
+[[redirects]]
+  from = "/instalaciones"
+  to = "/ubication.html"
+  status = 200
+
+[[redirects]]
+  from = "/asesoria"
+  to = "/email.html"
+  status = 200
