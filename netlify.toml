@@ -1,22 +1,28 @@
 [build]
-  publish = "."
+  command = ""
+  publish = "public"
 
 [[redirects]]
-  from = "/catalogo"
-  to = "/catalogo.html"
+  from = "/images/*"
+  to = "/images/:splat"
   status = 200
 
 [[redirects]]
-  from = "/productos"
-  to = "/products.html"
+  from = "/video/*"
+  to = "/video/:splat"
   status = 200
 
 [[redirects]]
-  from = "/instalaciones"
-  to = "/ubication.html"
+  from = "/public/*"
+  to = "/:splat"
   status = 200
 
-[[redirects]]
-  from = "/asesoria"
-  to = "/email.html"
-  status = 200
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "/video/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
