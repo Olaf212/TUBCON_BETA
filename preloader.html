@@ -21,7 +21,10 @@ html, body {
 /* Fondo */
 .holder {
     position: fixed;
-    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     background: radial-gradient(circle at center, #2a2a2a, #0f0f0f);
     display: flex;
     flex-direction: column;
@@ -41,7 +44,10 @@ html, body {
 .ring-back,
 .ring-front {
     position: absolute;
-    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     border-radius: 50%;
     transform-style: preserve-3d;
     transform: rotateX(65deg);
@@ -60,6 +66,7 @@ html, body {
             rgba(255,255,255,.15)
         );
     mask: radial-gradient(circle, transparent 58%, black 60%);
+    -webkit-mask: radial-gradient(circle, transparent 58%, black 60%);
 }
 
 /* ARO FRONTAL */
@@ -75,18 +82,23 @@ html, body {
             #b31717 360deg
         );
     mask: radial-gradient(circle, transparent 58%, black 60%);
+    -webkit-mask: radial-gradient(circle, transparent 58%, black 60%);
     filter: drop-shadow(0 0 18px rgba(0, 0, 0, 0.7));
 }
 
 /* LOGO TRASERO */
 .logo-back {
     position: absolute;
-    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     z-index: 4;
     display: flex;
     justify-content: center;
     align-items: center;
     mask: radial-gradient(circle, transparent 58%, black 60%);
+    -webkit-mask: radial-gradient(circle, transparent 58%, black 60%);
 }
 
 .logo-back img {
@@ -98,7 +110,10 @@ html, body {
 /* LOGO FRONTAL */
 .logo-front {
     position: absolute;
-    inset: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
     z-index: 6;
     display: flex;
     justify-content: center;
@@ -176,11 +191,11 @@ html, body {
         <div class="ring-back"></div>
 
         <div class="logo-back">
-            <img src="public/images/logo.png" alt="Logo">
+            <img src="images/logo.png" alt="Logo">
         </div>
 
         <div class="logo-front">
-            <img src="public/images/logo.png" alt="Logo">
+            <img src="images/logo.png" alt="Logo">
         </div>
 
         <div class="ring-front"></div>

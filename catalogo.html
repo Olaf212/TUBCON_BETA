@@ -2,20 +2,24 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>TUBCON - Catálogo</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="src/products.css">
-    <!-- CSS del Chatbot (externo) - IGUAL QUE INDEX.HTML -->
-    <link rel="stylesheet" href="src/chatbot.css">
-    <link rel="icon" type="image/png" href="public/images/iconoa.ico">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=yes">
+    <title>TUBCON - Catálogo Interactivo</title>
     
-    <!-- NUEVO ESTILO PARA HEADER Y SIDEBAR IGUAL AL INDEX -->
+    <!-- Evitar el almacenamiento en caché del navegador -->
+    <meta http-equiv="Expires" content="0">
+    <meta http-equiv="Last-Modified" content="0">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    
+    <!-- Fuente principal para todo el sitio -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="icon" type="image/png" href="images/iconoa.ico">
     <style>
-        /* ==================== */
-        /* RESET Y ESTILOS BASE */
-        /* ==================== */
+        /* ==================== RESET Y ESTILOS BASE ==================== */
         * {
             margin: 0;
             padding: 0;
@@ -27,42 +31,41 @@
         }
 
         body {
+            padding-top: 80px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #f5f5f7;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            overflow-x: hidden;
         }
 
         body.menu-open {
             overflow: hidden;
         }
 
-        /* ==================== */
-        /* HEADER - IDÉNTICO AL INDEX */
-        /* ==================== */
-      header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-    padding: 20px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #2d2d2d; /* ← COLOR SÓLIDO */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    transition: all 0.3s ease;
-}
+        /* ==================== HEADER ==================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #2d2d2d;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-/* Cuando hacemos scroll, hacerlo más compacto */
-header.scrolled {
-    background: #2d2d2d;
-    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-    padding: 15px 40px;
-}
+        header.scrolled {
+            background: #2d2d2d;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            padding: 15px 40px;
+        }
 
-        /* Logo */
         .logo img {
             height: 40px;
             transition: all 0.3s ease;
@@ -72,7 +75,6 @@ header.scrolled {
             height: 35px;
         }
 
-        /* Menú desktop */
         .menu-desktop ul {
             display: flex;
             list-style: none;
@@ -87,6 +89,7 @@ header.scrolled {
             transition: color 0.3s ease;
             position: relative;
             padding: 5px 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         .menu-desktop a:hover {
@@ -108,7 +111,6 @@ header.scrolled {
             width: 100%;
         }
 
-        /* Botón hamburguesa - MEJOR VISIBILIDAD */
         .hamburger {
             display: none;
             background: none;
@@ -116,40 +118,49 @@ header.scrolled {
             color: white !important;
             font-size: 1.8rem;
             cursor: pointer;
-            padding: 5px;
+            padding: 12px;
             z-index: 1001;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
+            pointer-events: auto;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+            min-width: 44px;
+            min-height: 44px;
+            align-items: center;
+            justify-content: center;
         }
 
         .hamburger:hover {
             color: #EF0315 !important;
+            transform: scale(1.1);
         }
 
-        /* ==================== */
-        /* SIDEBAR - IDÉNTICO AL INDEX */
-        /* ==================== */
+        /* ==================== SIDEBAR ==================== */
         #sidebar {
             position: fixed;
             top: 0;
             right: -300px;
             width: 300px;
             height: 100vh;
-            background: white;
-            box-shadow: -2px 0 15px rgba(0, 0, 0, 0);
+            background: rgba(45, 45, 45, 0.98);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
             transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
             z-index: 2000;
             display: flex;
             flex-direction: column;
             padding: 30px 25px;
             overflow-y: auto;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         #sidebar.active {
             right: 0;
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.4);
         }
 
-        /* Overlay de fondo cuando el menú está abierto */
-        #overlay {
+        #sidebar-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -162,7 +173,7 @@ header.scrolled {
             transition: opacity 0.3s ease, visibility 0.3s ease;
         }
 
-        #overlay.active {
+        #sidebar-overlay.active {
             opacity: 1;
             visibility: visible;
         }
@@ -173,7 +184,7 @@ header.scrolled {
             align-items: center;
             margin-bottom: 30px;
             padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .sidebar-logo {
@@ -187,23 +198,26 @@ header.scrolled {
         }
 
         .close-sidebar {
-            background: none;
+            background: rgba(255, 255, 255, 0.1);
             border: none;
-            font-size: 1.8rem;
-            color: #333;
+            font-size: 1.5rem;
+            color: #ffffff;
             cursor: pointer;
-            padding: 5px;
-            margin-left: 15px;
+            padding: 8px;
+            border-radius: 8px;
+            min-width: 40px;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .close-sidebar:hover {
-            color: #EF0315;
+            background: #EF0315;
         }
 
         #sidebar ul {
             list-style: none;
-            margin: 0;
-            padding: 0;
         }
 
         #sidebar li {
@@ -211,7 +225,7 @@ header.scrolled {
         }
 
         #sidebar a {
-            color: #333;
+            color: #ffffff;
             text-decoration: none;
             font-size: 1.1rem;
             display: block;
@@ -219,120 +233,88 @@ header.scrolled {
             border-radius: 8px;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         #sidebar a:hover {
-            background: #f8f9fa;
+            background: rgba(239, 3, 21, 0.1);
             color: #EF0315;
             border-left-color: #EF0315;
             padding-left: 20px;
         }
 
-        #sidebar a[style*="color:#EF0315"] {
+        #sidebar a.active {
             color: #EF0315 !important;
             font-weight: 600;
             border-left-color: #EF0315;
-            background: #fff5f5;
+            background: rgba(239, 3, 21, 0.15);
+            padding-left: 20px;
         }
 
-        /* Estilos para la sección inferior del sidebar */
-        .sidebar-bottom {
-            margin-top: auto;
-            padding-top: 30px;
-            border-top: 1px solid #eee;
-        }
 
-        .sidebar-bottom a {
-            display: block;
-            padding: 10px 0;
-            color: #333;
-            text-decoration: none;
-            border-left: none !important;
-            border-radius: 0;
-        }
-
-        .sidebar-bottom a:hover {
-            background: transparent;
-            color: #EF0315;
-            padding-left: 15px;
-        }
-
-        .sidebar-bottom a[style*="color: #EF0315"] {
-            color: #EF0315 !important;
-            font-weight: bold;
-            margin-bottom: 15px;
-        }
-
-        .sidebar-bottom a i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-        }
-
-        /* ==================== */
-        /* RESPONSIVE */
-        /* ==================== */
-        @media (max-width: 992px) {
-            .menu-desktop {
-                display: none;
-            }
-
-            .hamburger {
-                display: block;
-            }
-        }
-
-        @media (max-width: 768px) {
-            header {
-                padding: 15px 20px;
-            }
-
-            #sidebar {
-                width: 280px;
-                padding: 25px 20px;
-            }
-        }
-
-        @media (max-width: 576px) {
-            #sidebar {
-                width: 85%;
-                max-width: 300px;
-            }
-        }
-
-        /* ==================== */
-        /* ESTILOS EXISTENTES DEL CATÁLOGO */
-        /* ==================== */
-        
-        /* ESTILOS PARA WHATSAPP - IGUAL QUE INDEX.HTML */
-        .whatsapp-float.hidden {
-            opacity: 0;
-            transform: scale(0.8);
-            pointer-events: none;
-        }
-        
-        .chatbot-bubble.hidden {
-            opacity: 0;
-            transform: scale(0.8);
-            pointer-events: none;
-        }
-        
-        /* Ocultar WhatsApp en móvil cuando el chatbot esté abierto */
-        body.chatbot-active .whatsapp-float {
-            opacity: 0;
-            transform: scale(0.8);
-            pointer-events: none;
-        }
-        
-        /* Burbuja de WhatsApp */
-        .whatsapp-float {
+        /* ==================== DOWNLOAD FLOAT ==================== */
+        .download-float {
             position: fixed;
-            bottom: 105px;
+            bottom: 100px;
             right: 25px;
             z-index: 1000;
-            transition: opacity 0.3s ease, transform 0.3s ease;
+            transition: all 0.3s ease;
         }
-        
+
+        .download-float a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            background-color: #EF0315;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .download-float:hover {
+            transform: scale(1.1);
+        }
+
+        .download-float i {
+            font-size: 28px;
+        }
+
+        .download-tooltip {
+            position: absolute;
+            right: 70px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #333;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            pointer-events: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .download-float:hover .download-tooltip {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* ==================== WHATSAPP FLOAT ==================== */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 25px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
         .whatsapp-float a {
             display: flex;
             align-items: center;
@@ -342,24 +324,23 @@ header.scrolled {
             background-color: #25D366;
             border-radius: 50%;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
             text-decoration: none;
         }
-        
-        .whatsapp-float a:hover {
+
+        .whatsapp-float:hover {
             transform: scale(1.1);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
         }
-        
+
         .whatsapp-float i {
             font-size: 32px;
             color: white;
         }
-        
+
         .whatsapp-tooltip {
             position: absolute;
-            bottom: 70px;
-            right: 0;
+            right: 70px;
+            top: 50%;
+            transform: translateY(-50%);
             background: #333;
             color: white;
             padding: 8px 12px;
@@ -367,1717 +348,820 @@ header.scrolled {
             font-size: 12px;
             white-space: nowrap;
             opacity: 0;
-            transform: translateY(10px);
+            visibility: hidden;
             transition: all 0.3s ease;
             pointer-events: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
+
         .whatsapp-float:hover .whatsapp-tooltip {
             opacity: 1;
-            transform: translateY(0);
-        }
-        
-        /* Ajustes para móvil */
-        @media (max-width: 768px) {
-            .whatsapp-float {
-                bottom: 20px;
-                right: 20px;
-                z-index: 1004;
-            }
-            
-            .whatsapp-float a {
-                width: 55px;
-                height: 55px;
-            }
-            
-            .whatsapp-float i {
-                font-size: 28px;
-            }
-            
-            /* Ocultar chatbot desktop en móvil */
-            .chatbot-container {
-                display: none;
-            }
-        }
-        
-        /* Mostrar chatbot desktop solo en desktop */
-        @media (min-width: 769px) {
-            .chatbot-bubble, .chatbot-mobile-window {
-                display: none;
-            }
+            visibility: visible;
         }
 
-        /* Estilos para el carrusel */
-        .carousel-container {
+        /* ==================== VISOR DEL PDF (FLIPBOOK MEJORADO) ==================== */
+        #quienes-somos {
             width: 100%;
+            flex: 1;
             position: relative;
-            overflow: hidden;
-            margin-bottom: 20px;
         }
-        
-        .carousel-slide {
-            display: none;
+
+        .pdf-wrapper {
             width: 100%;
-            transition: opacity 0.8s ease;
-        }
-        
-        .carousel-slide.active {
+            background: #ffffff;
+            overflow: hidden;
             display: block;
+            position: relative;
         }
-        
-        .carousel-slide img {
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            max-height: 70vh;
+
+        /* dFlip: fondo blanco forzado */
+        .df-ui-bg, .df-bg, .df-ui-wrapper, .df-container,
+        ._df_book, #df_manual_book {
+            background: #ffffff !important;
+            background-color: #ffffff !important;
+            background-image: none !important;
         }
-        
-        .carousel-controls {
+
+        /* Ocultar barra nativa de controles */
+        .df-ui-controls {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        /* Ocultar el texto de "Cargando catálogo..." de dFlip */
+        .df-loading, 
+        .df-loading-info,
+        .df-loading-text,
+        [class*="loading"],
+        .df-ui-loading,
+        .df-preloader {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
+        }
+
+        ._df_book .df-loading,
+        ._df_book .df-loading:after,
+        ._df_book .df-loading:before,
+        div[class*="df-loading"] {
+            display: none !important;
+        }
+
+        html, body { background: #ffffff; }
+        * { outline: none !important; }
+
+        /* ==================== SOLUCIÓN PARA EL PARPADEO ==================== */
+        ._df_book,
+        ._df_book *,
+        .df-container,
+        .df-container *,
+        .df-page,
+        .df-page *,
+        .df-wrapper,
+        .df-wrapper * {
+            transition: none !important;
+            animation: none !important;
+            transform: translateZ(0);
+            -webkit-transform: translateZ(0);
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+            will-change: transform;
+        }
+
+        ._df_book .df-page-flip,
+        .df-container .df-page-turn {
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+        }
+
+        .df-page {
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        .df-container canvas {
+            -webkit-transform: translateZ(0);
+            transform: translateZ(0);
+        }
+
+        .df-container {
+            contain: content;
+            isolation: isolate;
+        }
+
+        .df-page-wrapper {
+            contain: paint;
+        }
+
+        ._df_book .df-shadow,
+        ._df_book .df-sheen {
+            opacity: 0.3 !important;
+            transition: none !important;
+        }
+
+        /* ==================== CONTROLES DEL FLIPBOOK ==================== */
+        #flipControls {
             position: absolute;
-            top: 50%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            transform: translateY(-50%);
-            z-index: 10;
-        }
-        
-        .carousel-control {
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            padding: 15px;
-            cursor: pointer;
-            font-size: 20px;
-            transition: background-color 0.3s;
-        }
-        
-        .carousel-control:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-        
-        .carousel-dots {
-            position: absolute;
-            bottom: 15px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            z-index: 10;
-        }
-        
-        .dot {
-            cursor: pointer;
-            height: 12px;
-            width: 12px;
-            margin: 0 5px;
-            background-color: rgba(255, 255, 255, 0.5);
-            border-radius: 50%;
-            display: inline-block;
-            transition: background-color 0.3s;
-        }
-        
-        .dot.active, .dot:hover {
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-        
-        /* Responsividad para móviles */
-        @media (max-width: 768px) {
-            .carousel-slide img {
-                max-height: 50vh;
-            }
-            
-            .carousel-control {
-                padding: 10px;
-                font-size: 16px;
-            }
-        }
-        
-        /* NUEVOS ESTILOS PARA LA SECCIÓN DE PRODUCTOS CON CARRUSELES HORIZONTALES */
-        .products-section {
-            padding: 40px 20px;
-            background-color: #f8f8f8;
-            text-align: center;
-        }
-        
-        .products-section h2 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .products-section p {
-            font-size: 1.1rem;
-            margin-bottom: 40px;
-            color: #666;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        /* ESTILOS PARA CARRUSELES HORIZONTALES DE PRODUCTOS */
-        .products-carousel {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-            margin: 0 auto;
-            max-width: 1200px;
-        }
-
-        .carousel-track {
-            display: flex;
-            transition: transform 0.5s ease;
-            gap: 20px;
-            padding: 10px 0;
-        }
-
-        .product-card {
-            flex: 0 0 auto;
-            width: 280px;
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-        }
-
-        .product-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            padding: 15px;
-            cursor: pointer;
-            font-size: 20px;
-            transition: background-color 0.3s;
-            z-index: 10;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .carousel-btn:hover {
-            background-color: rgba(0, 0, 0, 0.8);
-        }
-
-        .carousel-btn.prev {
-            left: 10px;
-        }
-
-        .carousel-btn.next {
-            right: 10px;
-        }
-
-        .carousel-dots {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-            gap: 8px;
-        }
-
-        .dot {
-            cursor: pointer;
-            height: 12px;
-            width: 12px;
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 50%;
-            display: inline-block;
-            transition: background-color 0.3s;
-        }
-
-        .dot.active, .dot:hover {
-            background-color: rgba(0, 0, 0, 0.7);
-        }
-
-        /* MEJORAS PARA LAS IMÁGENES DE PRODUCTOS */
-        .product-image-container {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            position: relative;
-            background-color: #f5f5f5;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .product-image {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            transition: transform 0.3s ease;
-            padding: 10px;
-        }
-        
-        .product-card:hover .product-image {
-            transform: scale(1.05);
-        }
-        
-        .product-info {
-            padding: 20px;
-        }
-        
-        .product-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        
-        .product-description {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-        
-        .product-model {
-            font-size: 0.85rem;
-            color: #888;
-            font-style: italic;
-            margin-bottom: 10px;
-        }
-        
-        .product-price {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #EF0315;
-            margin-bottom: 15px;
-        }
-        
-        /* ESTILOS PARA EL BOTÓN ANIMADO */
-        :root {
-            --primary-color: #EF0315;
-            --success-color: #28a745;
-        }
-
-        .button-container {
-            position: relative;
-            width: 100%;
-        }
-
-        .animated-button {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 40px;
-            overflow: hidden; 
-            position: relative;
-            z-index: 2;
-            transition: background-color 0.2s;
-        }
-
-        .animated-button:hover {
-            background-color: #d0021b;
-        }
-
-        .content-wrapper {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-        }
-
-        .cart-icon {
-            margin-left: 8px;
-            color: white; 
-            font-size: 1.2em;
-        }
-
-        .check-icon {
-            font-size: 1.5em;
-            position: absolute;
-            opacity: 0;
-            transform: scale(0);
-            color: white; /* Check blanco sobre fondo verde */
-        }
-        
-        .catalog-button {
-            display: inline-block;
-            background-color: #EF0315;
-            color: white;
-            padding: 12px 30px;
-            border-radius: 4px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-decoration: none;
-            transition: background-color 0.3s ease;
-            cursor: pointer;
-            border: none;
-        }
-        
-        .catalog-button:hover {
-            background-color: #d0021b;
-        }
-        
-        /* MODAL DEL CATÁLOGO */
-        .catalog-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
-            overflow: auto;
-        }
-        
-        .catalog-modal.active {
-            display: block;
-        }
-        
-        .catalog-content {
-            position: relative;
-            width: 90%;
-            max-width: 1000px;
-            margin: 40px auto;
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
-        }
-        
-        .catalog-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background-color: #333;
-            color: white;
-        }
-        
-        .catalog-header h2 {
-            margin: 0;
-            font-size: 1.8rem;
-        }
-        
-        .close-catalog {
-            background: none;
-            border: none;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            transition: color 0.3s ease;
-        }
-        
-        .close-catalog:hover {
-            color: #EF0315;
-        }
-        
-        .catalog-body {
-            padding: 20px;
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-        
-        .catalog-iframe {
-            width: 100%;
-            height: 70vh;
-            border: none;
-        }
-        
-        /* Responsividad para móviles */
-        @media (max-width: 768px) {
-            .product-card {
-                width: 250px;
-            }
-            
-            .carousel-btn {
-                padding: 10px;
-                font-size: 16px;
-                width: 40px;
-                height: 40px;
-            }
-            
-            .product-image-container {
-                height: 180px;
-            }
-        }
-
-        /* Ocultar scrollbar en navegadores Webkit */
-        .carousel-track::-webkit-scrollbar {
-            display: none;
-        }
-
-        .carousel-track {
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
-        }
-        
-        /* Estilos para secciones */
-        .section-header {
-            margin-bottom: 30px;
-        }
-        
-        .section-title {
-            font-size: 2.2rem;
-            color: #333;
-            margin-bottom: 10px;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
+            bottom: 24px;
             left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background-color: #EF0315;
-        }
-        
-        .section-description {
-            font-size: 1.1rem;
-            color: #666;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        /* ESTILOS PARA EL CARRITO DE COMPRAS */
-        .cart-icon {
-            position: fixed;
-            bottom: 180px;
-            right: 25px;
-            background-color: #EF0315;
-            color: white;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
+            z-index: 600;
             display: flex;
             align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            transition: all 0.3s ease;
+            gap: 6px;
+            background: rgba(20, 20, 30, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50px;
+            padding: 8px 18px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            user-select: none;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        .cart-icon:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+        #flipControls.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transform: translateX(-50%) translateY(15px);
         }
-        
-        .cart-count {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: #333;
-            color: white;
-            border-radius: 50%;
-            width: 24px;
-            height: 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-            font-weight: bold;
-            animation: bounce 0.5s ease;
-        }
-        
-        @keyframes bounce {
-            0%, 20%, 60%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-10px);
-            }
-            80% {
-                transform: translateY(-5px);
-            }
-        }
-        
-        .cart-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 2000;
-            overflow: auto;
-            animation: fadeIn 0.3s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        .cart-modal.active {
-            display: block;
-        }
-        
-        .cart-content {
-            position: relative;
-            width: 90%;
-            max-width: 500px;
-            margin: 40px auto;
-            background-color: white;
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            max-height: 80vh;
-            display: flex;
-            flex-direction: column;
-            animation: slideUp 0.3s ease;
-        }
-        
-        @keyframes slideUp {
-            from { 
-                transform: translateY(50px);
-                opacity: 0;
-            }
-            to { 
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-        
-        .cart-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 25px;
-            background: linear-gradient(135deg, #EF0315, #d0021b);
-            color: white;
-        }
-        
-        .cart-header h2 {
-            margin: 0;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-        
-        .close-cart {
-            background: none;
+
+        .fc-btn {
+            background: rgba(255,255,255,0.12);
             border: none;
-            color: white;
-            font-size: 1.8rem;
-            cursor: pointer;
-            transition: transform 0.3s ease;
+            color: #fff;
             width: 40px;
             height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
+            transition: background 0.2s ease, transform 0.15s ease;
+            flex-shrink: 0;
         }
-        
-        .close-cart:hover {
-            transform: rotate(90deg);
-            background-color: rgba(255, 255, 255, 0.1);
+        .fc-btn:hover {
+            background: #EF0315;
+            transform: scale(1.08);
         }
-        
-        .cart-body {
-            padding: 25px;
-            flex-grow: 1;
-            overflow-y: auto;
-            max-height: 400px;
+        .fc-btn:active {
+            transform: scale(0.96);
         }
-        
-        .cart-items {
-            width: 100%;
-            border-collapse: collapse;
+
+        .fc-divider {
+            width: 1px;
+            height: 28px;
+            background: rgba(255,255,255,0.25);
+            margin: 0 4px;
+            flex-shrink: 0;
         }
-        
-        .cart-items th, .cart-items td {
-            padding: 15px 10px;
-            text-align: left;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .cart-items th {
-            background-color: #f8f8f8;
-            font-weight: 600;
-            color: #555;
+
+        .fc-page-info {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #fff;
             font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .cart-item-image {
-            width: 50px;
-            height: 50px;
-            object-fit: contain;
-            border-radius: 6px;
-            background-color: #f5f5f5;
-            padding: 5px;
-        }
-        
-        .cart-item-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .cart-item-name {
             font-weight: 500;
-            color: #333;
+            background: rgba(0,0,0,0.3);
+            padding: 0 12px;
+            border-radius: 40px;
+            line-height: 34px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        .cart-item-quantity {
-            background-color: #f0f0f0;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 0.85rem;
+        .fc-page-info input {
+            width: 48px;
+            background: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 32px;
+            color: #fff;
+            font-size: 0.9rem;
+            text-align: center;
+            padding: 4px 0;
             font-weight: 600;
-            color: #555;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        .remove-item {
-            background: none;
-            border: none;
-            color: #EF0315;
+        .fc-page-info input:focus {
+            background: #EF0315;
+            border-color: white;
+            outline: none;
+        }
+        .fc-page-info span { opacity: 0.8; }
+
+        /* Flechas laterales grandes */
+        .fc-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 600;
+            background: rgba(20,20,30,0.75);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            width: 52px;
+            height: 88px;
+            border-radius: 0 16px 16px 0;
             cursor: pointer;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            width: 35px;
-            height: 35px;
+            font-size: 1.5rem;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%;
+            transition: all 0.2s ease;
         }
-        
-        .remove-item:hover {
-            background-color: rgba(239, 3, 21, 0.1);
-            transform: scale(1.1);
+        .fc-arrow:hover { background: #EF0315; width: 62px; }
+        .fc-arrow.right {
+            right: 0;
+            border-radius: 16px 0 0 16px;
         }
-        
-        .cart-footer {
-            padding: 25px;
-            background-color: #f8f8f8;
-            border-top: 1px solid #e0e0e0;
-        }
-        
-        .cart-summary {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            padding: 15px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-        
-        .cart-total-items {
-            font-weight: 500;
-            color: #555;
-        }
-        
-        .cart-total-count {
-            font-weight: 600;
-            color: #EF0315;
-            font-size: 1.1rem;
-        }
-        
-        .cart-actions {
-            display: flex;
-            gap: 12px;
-        }
-        
-        .cart-action-btn {
-            flex: 1;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-        }
-        
-        .cancel-btn {
-            background-color: #f0f0f0;
-            color: #666;
-        }
-        
-        .cancel-btn:hover {
-            background-color: #e0e0e0;
-            transform: translateY(-2px);
-        }
-        
-        .checkout-btn {
-            background: linear-gradient(135deg, #EF0315, #d0021b);
-            color: white;
-            box-shadow: 0 4px 12px rgba(239, 3, 21, 0.3);
-        }
-        
-        .checkout-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(239, 3, 21, 0.4);
-        }
-        
-        .empty-cart {
-            text-align: center;
-            padding: 50px 20px;
-            color: #888;
-        }
-        
-        .empty-cart i {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            color: #e0e0e0;
-        }
-        
-        .empty-cart p {
-            font-size: 1.1rem;
-            margin-bottom: 0;
-        }
-        
-        /* Ajustes para móviles */
-        @media (max-width: 768px) {
-            .cart-icon {
-                bottom: 150px;
-                right: 20px;
-                width: 55px;
-                height: 55px;
-            }
-            
-            .cart-content {
-                width: 95%;
-                margin: 20px auto;
-            }
-            
-            .cart-header {
-                padding: 15px 20px;
-            }
-            
-            .cart-body {
-                padding: 20px;
-            }
-            
-            .cart-items th, .cart-items td {
-                padding: 12px 8px;
-            }
-            
-            .cart-footer {
-                padding: 20px;
-            }
-            
-            .cart-actions {
-                flex-direction: column;
-            }
-        }
-        
-        /* AJUSTE PARA QUE EL CARRITO ESTÉ ENCIMA DEL CHATBOT EN MÓVIL */
-        @media (max-width: 768px) {
-            .cart-icon {
-                bottom: 150px; /* Encima del chatbot */
-            }
-            
-            .chatbot-bubble {
-                bottom: 80px; /* Debajo del carrito */
-            }
-            
-            .whatsapp-float {
-                bottom: 20px; /* En la parte inferior */
-            }
-        }
-        
-        /* ESTILOS PARA LA SECCIÓN DE REDIRECCIÓN */
-        .redirect-section {
-            padding: 40px 20px;
-            background-color: #f8f8f8;
-        }
+        .fc-arrow.left { left: 0; }
+        .fc-arrow.hidden { opacity: 0; pointer-events: none; }
 
-        .redirect-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .redirect-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .redirect-item {
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .redirect-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .redirect-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.3s ease;
-        }
-
-        .redirect-item:hover .redirect-image {
-            transform: scale(1.05);
-        }
-
-        /* Responsividad para móviles */
-        @media (max-width: 768px) {
-            .redirect-section {
-                padding: 30px 15px;
-            }
-            
-            .redirect-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 15px;
-            }
-            
-            .redirect-image {
-                height: 150px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .redirect-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .redirect-image {
-                height: 180px;
-            }
-        }
-
-        /* PRELOADER */
-        #preloader-container {
-            position: fixed;
+        /* ==================== PRELOADER EN EL ÁREA DEL CATÁLOGO ==================== */
+        #catalog-preloader {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: white;
-            z-index: 9999;
+            background: #ffffff;
+            z-index: 500;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s ease, visibility 0.6s ease;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        #preloader-container.fade-out {
+        #catalog-preloader.fade-out {
             opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
         }
 
-        /* Espacio para el header fijo */
-        body {
-            padding-top: 80px;
+        .preloader-logo {
+            width: 180px;
+            margin-bottom: 40px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .preloader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #EF0315;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+
+        .preloader-text {
+            color: #333;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 2px;
+            margin-top: 10px;
+        }
+
+        .preloader-progress {
+            width: 250px;
+            height: 3px;
+            background: #f0f0f0;
+            border-radius: 10px;
+            margin-top: 30px;
+            overflow: hidden;
+        }
+
+        .preloader-progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #EF0315, #ff4d5e);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            animation: loading 2.5s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        @keyframes loading {
+            0% { width: 0%; margin-left: 0; }
+            50% { width: 100%; margin-left: 0; }
+            100% { width: 0%; margin-left: 100%; }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 992px) {
+            .menu-desktop { display: none; }
+            .hamburger { display: flex; }
+        }
+
+        @media (max-width: 768px) {
+            header { padding: 12px 20px; }
+            #sidebar { width: 280px; padding: 25px 20px; }
+            .whatsapp-float { bottom: 20px; right: 20px; }
+            .whatsapp-float a { width: 55px; height: 55px; }
+            .download-float { bottom: 85px; right: 20px; }
+            .download-float a { width: 55px; height: 55px; }
+            .fc-arrow { width: 40px; height: 70px; font-size: 1.2rem; }
+            .fc-arrow:hover { width: 48px; }
+            #flipControls { padding: 5px 12px; gap: 4px; }
+            .fc-btn { width: 36px; height: 36px; font-size: 0.85rem; }
+            .fc-page-info { font-size: 0.8rem; padding: 0 6px; }
+            .fc-page-info input { width: 44px; }
+            .preloader-logo { width: 140px; }
+        }
+
+        /* REGLA PARA OCULTAR ICONOS CUANDO EL MENÚ ESTÁ ABIERTO */
+        body.menu-open .whatsapp-float, 
+        body.menu-open .download-float,
+        body.menu-open .cart-icon {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
         }
     </style>
 </head>
 
 <body>
-    <!-- PRELOADER EXTERNO -->
-    <div id="preloader-container">
-        <iframe src="preloader.html" frameborder="0" style="width:100%; height:100%;"></iframe>
-    </div>
-    
-    <!-- HEADER ACTUALIZADO -->
+
+    <!-- HEADER (siempre visible) -->
     <header id="mainHeader">
         <div class="logo">
             <a href="index.html">
-                <img src="public/images/logo.png" class="logo" alt="TUBCON S.A. de C.V." />
+                <img src="images/logo.png" alt="TUBCON S.A. de C.V." />
             </a>
         </div>
-
-        <!-- Menú desktop -->
         <nav class="menu-desktop">
             <ul>
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="products.html">Productos</a></li>
                 <li><a href="ubication.html">Instalaciones</a></li>
                 <li><a href="email.html">Asesoría</a></li>
-                
-                <li><a href="catalogo.html" style="color:#EF0315 !important">Catalogo</a></li>
+                <li><a href="catalogo.html" style="color:#EF0315 !important">Catálogo</a></li>
             </ul>
         </nav>
-
-        <!-- Botón hamburguesa -->
         <button class="hamburger" id="hamburger">
             <i class="fas fa-bars"></i>
         </button>
     </header>
 
-    <!-- SIDEBAR ACTUALIZADO -->
+    <!-- SIDEBAR -->
     <nav id="sidebar">
         <div class="sidebar-header">
             <div class="sidebar-logo">
-                <img src="public/images/logo.png" alt="TUBCON S.A. de C.V.">
+                <img src="images/logo.png" alt="TUBCON S.A. de C.V.">
             </div>
             <button class="close-sidebar" id="closeSidebar">
                 <i class="fas fa-times"></i>
             </button>
         </div>
-
         <ul>
             <li><a href="index.html">Inicio</a></li>
             <li><a href="products.html">Productos</a></li>
             <li><a href="ubication.html">Instalaciones</a></li>
             <li><a href="email.html">Asesoría</a></li>
-         
-            <li><a href="catalogo.html" style="color:#EF0315">Catalogo</a></li>
+            <li><a href="catalogo.html" class="active">Catálogo</a></li>
         </ul>
-
-       
     </nav>
+    <div id="sidebar-overlay"></div>
 
-    <!-- OVERLAY PARA EL SIDEBAR -->
-    <div id="overlay"></div>
-    
-    <!-- CATÁLOGO COMPLETO -->
+    <!-- CATÁLOGO FLIPBOOK -->
     <section id="quienes-somos">
-        <div class="flippingbook-container">
-            <!-- Iframe modificado para deshabilitar sonido -->
-            <iframe src="https://simplebooklet.com/catalogochico" allow="clipboard-write"></iframe>
+        <div class="pdf-wrapper" id="pdfWrapper">
+            
+            <!-- PRELOADER DENTRO DEL ÁREA DEL CATÁLOGO (header y footer intactos) -->
+            <div id="catalog-preloader">
+                <img src="images/logo.png" alt="TUBCON" class="preloader-logo">
+                <div class="preloader-spinner"></div>
+                <div class="preloader-text">Cargando Catálogo</div>
+                <div class="preloader-progress">
+                    <div class="preloader-progress-bar"></div>
+                </div>
+            </div>
+
+            <!-- Flecha izquierda lateral -->
+            <button class="fc-arrow left" id="fcPrevArrow" title="Página anterior">
+                <i class="fas fa-chevron-left"></i>
+            </button>
+
+            <!-- Flipbook -->
+            <div class="_df_book" source="catalogo.pdf" id="df_manual_book" style="width:100%;"></div>
+
+            <!-- Flecha derecha lateral -->
+            <button class="fc-arrow right" id="fcNextArrow" title="Página siguiente">
+                <i class="fas fa-chevron-right"></i>
+            </button>
+
+            <!-- Barra de controles inferior -->
+            <div id="flipControls">
+                <button class="fc-btn" id="fcPrevBtn" title="Página anterior">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+
+                <div class="fc-divider"></div>
+
+                <div class="fc-page-info">
+                    <input type="number" id="fcPageInput" min="1" value="1" title="Ir a página">
+                    <span>/ <span id="fcTotalPages">?</span></span>
+                </div>
+
+                <div class="fc-divider"></div>
+
+                <button class="fc-btn" id="fcNextBtn" title="Página siguiente">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+
+                <div class="fc-divider"></div>
+
+                <button class="fc-btn" id="fcZoomOutBtn" title="Reducir zoom">
+                    <i class="fas fa-search-minus"></i>
+                </button>
+                <button class="fc-btn" id="fcZoomInBtn" title="Aumentar zoom">
+                    <i class="fas fa-search-plus"></i>
+                </button>
+            </div>
         </div>
-        
-        <div class="instructions">Utiliza los controles para navegar por nuestro catálogo</div>
     </section>
 
-    <footer>
-          <p>© 2025 TUBCON S.A. de C.V. </p>
-    </footer>
 
-    <!-- MODAL DEL CATÁLOGO -->
-    <div class="catalog-modal" id="catalogModal">
-        <div class="catalog-content">
-            <div class="catalog-header">
-                <h2>Catálogo Completo TUBCON</h2>
-                <button class="close-catalog" id="closeCatalog">&times;</button>
-            </div>
-            <div class="catalog-body">
-                <iframe src="https://simplebooklet.com/catalogochico" class="catalog-iframe" allow="clipboard-write"></iframe>
-            </div>
-        </div>
+    <!-- DESCARGAR CATÁLOGO FLOTANTE -->
+    <div class="download-float" id="downloadFloat">
+        <a href="catalogo.pdf" download="CATALOGO-TUBCON.pdf" title="Descargar Catálogo">
+            <i class="fas fa-file-download"></i>
+        </a>
+        <div class="download-tooltip">Descargar Catálogo PDF</div>
     </div>
 
-    <!-- CHATBOT DESKTOP - EXACTAMENTE IGUAL QUE INDEX.HTML -->
-    <div class="chatbot-container" id="desktopChatbot">
-        <div class="chatbot-header" id="chatbotToggle">
-            <span>Asistente TUBCON</span>
-            <i class="fas fa-robot"></i>
-        </div>
-        <div class="chatbot-body" id="chatbotBody">
-            <div class="chatbot-messages" id="chatbotMessages"></div>
-            <div class="chatbot-input">
-                <input type="text" id="userInput" placeholder="Escribe tu pregunta...">
-                <button id="sendButton"><i class="fas fa-paper-plane"></i></button>
-            </div>
-        </div>
-    </div>
-
-    
-
-    <!-- WHATSAPP FLOAT - EXACTAMENTE IGUAL QUE INDEX.HTML -->
+    <!-- WHATSAPP FLOTANTE -->
     <div class="whatsapp-float" id="whatsappFloat">
-        <a href="https://wa.me/525543225189" id="whatsappLink" target="_blank">
+        <a href="https://wa.me/525543225189" target="_blank">
             <i class="fab fa-whatsapp"></i>
         </a>
-        <div class="whatsapp-tooltip">
-            ¿Necesitas ayuda?
-        </div>
+        <div class="whatsapp-tooltip">¿Necesitas ayuda?</div>
     </div>
 
-    <!-- SCRIPTS DEL HEADER Y SIDEBAR -->
+    <!-- SCRIPTS: jQuery + dFlip -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@dearhive/dearflip-jquery-flipbook@1.7.3/dflip/js/dflip.min.js"></script>
+    
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        (function() {
+            // ============================================
+            // SERVICE WORKER REGISTRATION
+            // ============================================
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.worker = navigator.serviceWorker.register('./sw.js')
+                        .then(reg => console.log('Service Worker registered', reg))
+                        .catch(err => console.log('Service Worker registration failed', err));
+                });
+            }
+
+            // ========== PRELOADER DEL CATÁLOGO ==========
+            const catalogPreloader = document.getElementById('catalog-preloader');
+            
+            // Ocultar el preloader cuando el flipbook esté listo
+            function hidePreloader() {
+                if (catalogPreloader) {
+                    catalogPreloader.classList.add('fade-out');
+                    setTimeout(() => {
+                        if (catalogPreloader) {
+                            catalogPreloader.style.display = 'none';
+                        }
+                    }, 600);
+                }
+            }
+
+            // También ocultar después de un tiempo máximo (por si hay problemas)
+            setTimeout(hidePreloader, 5000);
+
+            // Ocultar cualquier texto de "Cargando" que aparezca en el DOM
+            function removeLoadingTexts() {
+                const elements = document.querySelectorAll('*');
+                elements.forEach(el => {
+                    if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
+                        const text = el.textContent.toLowerCase();
+                        if (text.includes('cargando') || text.includes('catálogo')) {
+                            if (el.closest('._df_book') || el.closest('.df-container')) {
+                                el.style.display = 'none';
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Ejecutar cada 100ms durante los primeros 3 segundos
+            let attempts = 0;
+            const interval = setInterval(() => {
+                removeLoadingTexts();
+                attempts++;
+                if (attempts > 30) clearInterval(interval);
+            }, 100);
+
+            // ========== HEADER Y SIDEBAR ==========
             const header = document.getElementById('mainHeader');
             const hamburger = document.getElementById('hamburger');
-            const closeSidebar = document.getElementById('closeSidebar');
+            const closeSidebarBtn = document.getElementById('closeSidebar');
             const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
+            const overlay = document.getElementById('sidebar-overlay');
             const body = document.body;
-            
-            // Inicializar header con transparencia
-            header.classList.remove('scrolled');
-            
-            // Manejar el scroll
+
             function handleScroll() {
-                const scrollPosition = window.scrollY;
-                
-                // Cambiar header cuando se hace scroll
-                if (scrollPosition > 50) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
+                if (window.scrollY > 50) header.classList.add('scrolled');
+                else header.classList.remove('scrolled');
             }
-            
-            // Escuchar eventos de scroll
             window.addEventListener('scroll', handleScroll);
-            handleScroll(); // Verificar estado inicial
-            
-            // FUNCIONALIDAD DEL MENÚ MÓVIL
-            function openSidebar() {
-                sidebar.classList.add('active');
-                overlay.classList.add('active');
-                body.classList.add('menu-open');
-            }
-            
-            function closeSidebarFunc() {
-                sidebar.classList.remove('active');
-                overlay.classList.remove('active');
-                body.classList.remove('menu-open');
-            }
-            
-            // Abrir menú
-            hamburger.addEventListener('click', openSidebar);
-            
-            // Cerrar menú con botón X
-            closeSidebar.addEventListener('click', closeSidebarFunc);
-            
-            // Cerrar menú al hacer clic en overlay
-            overlay.addEventListener('click', closeSidebarFunc);
-            
-            // Cerrar menú al hacer clic en un enlace del sidebar
-            document.querySelectorAll('#sidebar a').forEach(link => {
-                link.addEventListener('click', closeSidebarFunc);
-            });
-            
-            // Cerrar menú con tecla ESC
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && sidebar.classList.contains('active')) {
-                    closeSidebarFunc();
-                }
-            });
-        });
-    </script>
+            handleScroll();
 
-    <!-- SCRIPTS EXISTENTES -->
-    <script>
-        // Funcionalidad del carrusel de banners
-        let slideIndex = 1;
-        showSlides(slideIndex);
-        
-        // Configurar cambio automático cada 5 segundos
-        setInterval(function() {
-            plusSlides(1);
-        }, 5000);
-        
-        function plusSlides(n) {
-            showSlides(slideIndex += n);
-        }
-        
-        function currentSlide(n) {
-            showSlides(slideIndex = n);
-        }
-        
-        function showSlides(n) {
-            let i;
-            let slides = document.getElementsByClassName("carousel-slide");
-            let dots = document.getElementsByClassName("dot");
-            
-            if (n > slides.length) {slideIndex = 1}
-            if (n < 1) {slideIndex = slides.length}
-            
-            for (i = 0; i < slides.length; i++) {
-                slides[i].classList.remove("active");
-            }
-            
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
-            }
-            
-            slides[slideIndex-1].classList.add("active");
-            dots[slideIndex-1].className += " active";
-        }
-        
-        // Funcionalidad del catálogo modal
-        const openCatalogBtn = document.getElementById('openCatalog');
-        const catalogModal = document.getElementById('catalogModal');
-        const closeCatalogBtn = document.getElementById('closeCatalog');
-        
-        if (openCatalogBtn) {
-            openCatalogBtn.addEventListener('click', function() {
-                catalogModal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            });
-        }
-        
-        if (closeCatalogBtn) {
-            closeCatalogBtn.addEventListener('click', function() {
-                catalogModal.classList.remove('active');
-                document.body.style.overflow = '';
-            });
-        }
-        
-        // Cerrar modal al hacer clic fuera del contenido
-        if (catalogModal) {
-            catalogModal.addEventListener('click', function(e) {
-                if (e.target === catalogModal) {
-                    catalogModal.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            });
-        }
+            function openSidebar() { sidebar.classList.add('active'); overlay.classList.add('active'); body.classList.add('menu-open'); }
+            function closeSidebarFunc() { sidebar.classList.remove('active'); overlay.classList.remove('active'); body.classList.remove('menu-open'); }
+            if (hamburger) hamburger.addEventListener('click', openSidebar);
+            if (closeSidebarBtn) closeSidebarBtn.addEventListener('click', closeSidebarFunc);
+            if (overlay) overlay.addEventListener('click', closeSidebarFunc);
+            document.querySelectorAll('#sidebar a').forEach(link => link.addEventListener('click', closeSidebarFunc));
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('active')) closeSidebarFunc(); });
 
-        // Inicializar carruseles de productos
-        document.addEventListener('DOMContentLoaded', function() {
-            initCarousels();
-            initCart();
-            initAnimatedButtons();
-        });
-
-        // Función para inicializar todos los carruseles
-        function initCarousels() {
-            const carousels = [
-                { id: 'agua', track: 'carousel-agua', dots: 'dots-agua' },
-                { id: 'gas', track: 'carousel-gas', dots: 'dots-gas' },
-                { id: 'accesorios', track: 'carousel-accesorios', dots: 'dots-accesorios' }
-            ];
-
-            carousels.forEach(carousel => {
-                initCarousel(carousel.id, carousel.track, carousel.dots);
-            });
-        }
-
-        // Función para inicializar un carrusel específico
-        function initCarousel(carouselId, trackId, dotsId) {
-            const track = document.getElementById(trackId);
-            const dotsContainer = document.getElementById(dotsId);
-            const products = track.querySelectorAll('.product-card');
-            const prevBtn = document.querySelector(`.carousel-btn.prev[data-carousel="${carouselId}"]`);
-            const nextBtn = document.querySelector(`.carousel-btn.next[data-carousel="${carouselId}"]`);
-            
-            let currentIndex = 0;
-            let productsPerView = getProductsPerView();
-            
-            // Crear puntos de navegación
-            createDots();
-            updateDots();
-            
-            // Configurar eventos de navegación
-            prevBtn.addEventListener('click', () => {
-                if (currentIndex > 0) {
-                    currentIndex--;
-                    updateCarousel();
-                }
-            });
-            
-            nextBtn.addEventListener('click', () => {
-                if (currentIndex < products.length - productsPerView) {
-                    currentIndex++;
-                    updateCarousel();
-                }
-            });
-            
-            // Actualizar carrusel al cambiar tamaño de ventana
-            window.addEventListener('resize', () => {
-                productsPerView = getProductsPerView();
-                updateCarousel();
-            });
-            
-            // Función para obtener cuántos productos mostrar según el ancho de pantalla
-            function getProductsPerView() {
-                if (window.innerWidth < 768) return 1;
-                if (window.innerWidth < 992) return 2;
-                return 3;
-            }
-            
-            // Función para actualizar la posición del carrusel
-            function updateCarousel() {
-                const productWidth = products[0].offsetWidth + 20; // Ancho + margen
-                track.style.transform = `translateX(-${currentIndex * productWidth}px)`;
-                updateDots();
-            }
-            
-            // Función para crear los puntos de navegación
-            function createDots() {
-                const totalDots = Math.max(1, products.length - productsPerView + 1);
-                
-                for (let i = 0; i < totalDots; i++) {
-                    const dot = document.createElement('div');
-                    dot.classList.add('dot');
-                    if (i === 0) dot.classList.add('active');
-                    
-                    dot.addEventListener('click', () => {
-                        currentIndex = i;
-                        updateCarousel();
-                    });
-                    
-                    dotsContainer.appendChild(dot);
+            // ========== AJUSTE DINÁMICO DE ALTURA ==========
+            function resizeFlipHeight() {
+                const headerEl = document.getElementById('mainHeader');
+                const wrapper = document.getElementById('pdfWrapper');
+                const bookDiv = document.getElementById('df_manual_book');
+                if (!wrapper) return;
+                const headerH = headerEl ? headerEl.offsetHeight : 80;
+                const available = window.innerHeight - headerH;
+                wrapper.style.height = available + 'px';
+                if (bookDiv) bookDiv.style.height = available + 'px';
+                if (window.DFLIP && typeof window.DFLIP.resize === 'function') {
+                    setTimeout(() => window.DFLIP.resize(), 80);
                 }
             }
-            
-            // Función para actualizar el estado de los puntos
-            function updateDots() {
-                const dots = dotsContainer.querySelectorAll('.dot');
-                dots.forEach((dot, index) => {
-                    dot.classList.toggle('active', index === currentIndex);
-                });
-            }
-            
-            // Inicializar posición del carrusel
-            updateCarousel();
-            
-            // Configurar cambio automático cada 5 segundos
-            setInterval(() => {
-                if (currentIndex < products.length - productsPerView) {
-                    currentIndex++;
-                } else {
-                    currentIndex = 0;
+            window.addEventListener('resize', resizeFlipHeight);
+            resizeFlipHeight();
+
+            // ========== VARIABLES GLOBALES FLIPBOOK ==========
+            let flipInstance = null;
+            let totalPages = 1;
+            let currentPageNum = 1;
+
+            // Función para estabilizar el renderizado
+            function stabilizeRendering() {
+                const bookElement = document.getElementById('df_manual_book');
+                if (bookElement) {
+                    bookElement.style.transform = 'translateZ(0)';
+                    setTimeout(() => {
+                        bookElement.style.transform = '';
+                    }, 50);
                 }
-                updateCarousel();
-            }, 5000);
-        }
-
-        // CARRITO DE COMPRAS
-        let cart = [];
-        const cartIcon = document.getElementById('cartIcon');
-        const cartModal = document.getElementById('cartModal');
-        const closeCartBtn = document.getElementById('closeCart');
-        const cartItemsContainer = document.getElementById('cartItemsContainer');
-        const cartCount = document.getElementById('cartCount');
-        const cartTotalCount = document.getElementById('cartTotalCount');
-        const cancelBtn = document.getElementById('cancelBtn');
-        const checkoutBtn = document.getElementById('checkoutBtn');
-
-        // Inicializar carrito
-        function initCart() {
-            // Cargar carrito desde localStorage si existe
-            const savedCart = localStorage.getItem('tubconCart');
-            if (savedCart) {
-                cart = JSON.parse(savedCart);
-                updateCartUI();
             }
 
-            // Configurar eventos
-            cartIcon.addEventListener('click', openCart);
-            closeCartBtn.addEventListener('click', closeCart);
-            cancelBtn.addEventListener('click', closeCart);
-            checkoutBtn.addEventListener('click', checkout);
-
-            // Cerrar modal al hacer clic fuera
-            cartModal.addEventListener('click', function(e) {
-                if (e.target === cartModal) {
-                    closeCart();
+            // Funciones de navegación robustas
+            function safeGoToPage(page) {
+                if (!flipInstance) {
+                    console.warn("Flipbook aún no inicializado");
+                    return false;
                 }
-            });
-        }
-
-        // Agregar producto al carrito
-        function addToCart(product, image) {
-            // Verificar si el producto ya está en el carrito
-            const existingItem = cart.find(item => item.product === product);
-            
-            if (existingItem) {
-                existingItem.quantity += 1;
-            } else {
-                cart.push({
-                    product,
-                    image,
-                    quantity: 1
-                });
-            }
-            
-            // Actualizar UI y guardar en localStorage
-            updateCartUI();
-            saveCart();
-        }
-
-        // Actualizar la interfaz del carrito
-        function updateCartUI() {
-            // Actualizar contador
-            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
-            cartCount.textContent = totalItems;
-            cartTotalCount.textContent = totalItems;
-            
-            // Actualizar contenido del carrito
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = `
-                    <div class="empty-cart">
-                        <i class="fas fa-shopping-bag"></i>
-                        <p>Tu lista está vacía</p>
-                    </div>
-                `;
-                checkoutBtn.disabled = true;
-            } else {
-                cartItemsContainer.innerHTML = `
-                    <table class="cart-items">
-                        <thead>
-                            <tr>
-                                <th>Producto</th>
-                                <th>Cantidad</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${cart.map((item, index) => `
-                                <tr>
-                                    <td>
-                                        <div class="cart-item-info">
-                                            <img src="${item.image}" alt="${item.product}" class="cart-item-image">
-                                            <span class="cart-item-name">${item.product}</span>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <span class="cart-item-quantity">${item.quantity}</span>
-                                    </td>
-                                    <td>
-                                        <button class="remove-item" onclick="removeFromCart(${index})">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                `;
-                checkoutBtn.disabled = false;
-            }
-        }
-
-        // Eliminar producto del carrito
-        function removeFromCart(index) {
-            cart.splice(index, 1);
-            updateCartUI();
-            saveCart();
-        }
-
-        // Abrir modal del carrito
-        function openCart() {
-            cartModal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Cerrar modal del carrito
-        function closeCart() {
-            cartModal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-
-        // Finalizar compra
-        function checkout() {
-            if (cart.length === 0) return;
-            
-            // Crear mensaje para WhatsApp
-            let message = "¡Hola! Me interesan los siguientes productos de TUBCON:%0A%0A";
-            
-            cart.forEach(item => {
-                message += `• ${item.product} - Cantidad: ${item.quantity}%0A`;
-            });
-            
-            message += `%0ATotal de productos: ${cart.reduce((total, item) => total + item.quantity, 0)}%0A%0A`;
-            message += "¿Podrían proporcionarme más información sobre disponibilidad y precios?";
-            
-            // Abrir WhatsApp
-            const isMobile = window.innerWidth <= 768;
-            const whatsappUrl = isMobile 
-                ? `https://wa.me/525543225189?text=${message}`
-                : `https://web.whatsapp.com/send?phone=525543225189&text=${message}`;
-            
-            window.open(whatsappUrl, '_blank');
-            
-            // Limpiar carrito después de enviar
-            cart = [];
-            updateCartUI();
-            saveCart();
-            
-            // Cerrar carrito
-            closeCart();
-        }
-
-        // Guardar carrito en localStorage
-        function saveCart() {
-            localStorage.setItem('tubconCart', JSON.stringify(cart));
-        }
-
-        // INICIALIZAR BOTONES ANIMADOS
-        function initAnimatedButtons() {
-            document.querySelectorAll('.animated-button').forEach(button => {
-                const textContent = button.querySelector('.text-content');
-                const cartIcon = button.querySelector('.cart-icon');
-                const checkIcon = button.querySelector('.check-icon');
+                let target = parseInt(page, 10);
+                if (isNaN(target)) target = 1;
+                if (target < 1) target = 1;
+                if (totalPages && target > totalPages) target = totalPages;
                 
-                let isAnimating = false;
-                
-                const tl = gsap.timeline({ paused: true });
-                
-                // FASE 1: DESAPARICIÓN DEL TEXTO Y MOVIMIENTO DEL CARRITO HACIA LA IZQUIERDA (RECTO)
-                tl.to(textContent, { 
-                    opacity: 0, 
-                    duration: 0.2 
-                }, 0) 
-                  .to(cartIcon, {
-                      x: -150, // Se mueve recto hacia la izquierda
-                      y: 0,    // Sin movimiento vertical
-                      scale: 1, // Mantiene el tamaño
-                      rotation: 0, // Sin rotación
-                      opacity: 0,
-                      duration: 0.5,
-                      ease: 'power2.in',
-                  }, 0);
-                
-                // FASE 2: TRANSFORMACIÓN A CÍRCULO
-                tl.to(button, {
-                    width: 40,
-                    borderRadius: '50%',
-                    duration: 0.4,
-                    ease: 'power2.inOut',
-                }, 0.5)
-                
-                // CAMBIO DE COLOR A VERDE
-                .to(button, {
-                    backgroundColor: 'var(--success-color)' 
-                }, 0.7);
-                
-                // FASE 3: APARICIÓN DEL CHECK (blanco sobre fondo verde)
-                tl.to(checkIcon, {
-                    opacity: 1,
-                    scale: 1,
-                    duration: 0.3,
-                    ease: 'back.out(2)' 
-                }, 0.95)
-                
-                // PAUSA
-                .to({}, { duration: 1.5 })
-                
-                // FASE 4: VUELTA AL ESTADO ORIGINAL
-                .to(checkIcon, { 
-                    opacity: 0, 
-                    scale: 0, 
-                    duration: 0.2 
-                }, '+=0') 
-                .to(button, {
-                    width: '100%',
-                    borderRadius: '5px',
-                    backgroundColor: 'var(--primary-color)',
-                    duration: 0.4,
-                    ease: 'power2.inOut',
-                }, '-=0.1')
-                .to(textContent, { 
-                    opacity: 1, 
-                    duration: 0.15 
-                }, '-=0.15')
-                .set(cartIcon, { 
-                    x: 0, 
-                    y: 0, 
-                    scale: 1, 
-                    rotation: 0, 
-                    opacity: 1 
-                });
-                
-                // Manejador de evento click
-                button.addEventListener('click', (event) => {
-                    if (isAnimating) return;
-                    isAnimating = true;
-                    
-                    // Obtener datos del producto
-                    const product = button.getAttribute('data-product');
-                    const image = button.getAttribute('data-image');
-                    
-                    // Agregar al carrito
-                    addToCart(product, image);
-                    
-                    // Iniciar animación
-                    tl.restart();
-                    tl.eventCallback('onComplete', () => {
-                        isAnimating = false;
-                    });
-                });
-            });
-        }
-
-        // Hacer funciones disponibles globalmente
-        window.removeFromCart = removeFromCart;
-    </script>
-
-    <!-- Chatbot - EXACTAMENTE IGUAL QUE INDEX.HTML -->
-    <script type="module">
-        import { knowledgeBase, procesarMensaje } from './chatbot.js';
-        let isDesktopChatOpen = false;
-        let isMobileChatOpen = false;
-
-        document.addEventListener('DOMContentLoaded', function () {
-            const saludoAleatorio = knowledgeBase.saludos[
-                Math.floor(Math.random() * knowledgeBase.saludos.length)
-            ];
-            const mensajeDivDesktop = document.createElement('div');
-            mensajeDivDesktop.className = 'message bot-message';
-            mensajeDivDesktop.textContent = saludoAleatorio;
-            document.getElementById('chatbotMessages').appendChild(mensajeDivDesktop);
-            const mensajeDivMobile = document.createElement('div');
-            mensajeDivMobile.className = 'message bot-message';
-            mensajeDivMobile.textContent = saludoAleatorio;
-            document.getElementById('mobileChatbotMessages').appendChild(mensajeDivMobile);
-            document.getElementById('chatbotToggle').addEventListener('click', toggleDesktopChat);
-            document.getElementById('sendButton').addEventListener('click', function () {
-                sendMessage('userInput', 'chatbotMessages');
-            });
-            document.getElementById('userInput').addEventListener('keydown', function (e) {
-                if (e.key === 'Enter') sendMessage('userInput', 'chatbotMessages');
-            });
-            document.getElementById('mobileSendButton').addEventListener('click', function () {
-                sendMessage('mobileUserInput', 'mobileChatbotMessages');
-            });
-            document.getElementById('mobileUserInput').addEventListener('keydown', function (e) {
-                if (e.key === 'Enter') sendMessage('mobileUserInput', 'mobileChatbotMessages');
-            });
-            const whatsappLink = document.getElementById('whatsappLink');
-            const isMobile = window.innerWidth <= 768;
-            whatsappLink.href = isMobile
-                ? "https://wa.me/525543225189"
-                : "https://web.whatsapp.com/send?phone=525543225189";
-        });
-
-        function toggleDesktopChat() {
-            const chatBody = document.getElementById('chatbotBody');
-            isDesktopChatOpen = !isDesktopChatOpen;
-            if (isDesktopChatOpen) {
-                chatBody.classList.add('active');
-                if (window.innerWidth > 768) {
-                    document.getElementById('whatsappFloat').classList.add('hidden');
+                if (typeof flipInstance.gotoPage === 'function') {
+                    flipInstance.gotoPage(target);
+                } else if (typeof flipInstance.flipToPage === 'function') {
+                    flipInstance.flipToPage(target);
+                } else if (typeof flipInstance.jumpToPage === 'function') {
+                    flipInstance.jumpToPage(target);
+                } else if (flipInstance.setCurrentPage) {
+                    flipInstance.setCurrentPage(target);
+                    if (flipInstance.refresh) flipInstance.refresh();
+                } else if (flipInstance._flip && flipInstance._flip.gotoPage) {
+                    flipInstance._flip.gotoPage(target);
                 }
                 setTimeout(() => {
-                    const messages = document.getElementById('chatbotMessages');
-                    messages.scrollTop = messages.scrollHeight;
-                }, 300);
-            } else {
-                chatBody.classList.remove('active');
-                if (window.innerWidth > 768) {
-                    document.getElementById('whatsappFloat').classList.remove('hidden');
+                    updatePageInfoDisplay();
+                    stabilizeRendering();
+                }, 120);
+                return true;
+            }
+
+            function nextPage() { 
+                const btn = document.querySelector('.df-ui-next') || document.querySelector('.df-ui-btn.ti-angle-right') || document.querySelector('.df-ui-btn.ti-arrow-right');
+                if (btn) {
+                    btn.click();
+                    setTimeout(stabilizeRendering, 100);
+                } else if (flipInstance && currentPageNum < totalPages) safeGoToPage(currentPageNum + 1); 
+            }
+            function prevPage() { 
+                const btn = document.querySelector('.df-ui-prev') || document.querySelector('.df-ui-btn.ti-angle-left') || document.querySelector('.df-ui-btn.ti-arrow-left');
+                if (btn) {
+                    btn.click();
+                    setTimeout(stabilizeRendering, 100);
+                } else if (flipInstance && currentPageNum > 1) safeGoToPage(currentPageNum - 1); 
+            }
+            function firstPage() { safeGoToPage(1); }
+            function lastPage() { safeGoToPage(totalPages); }
+            
+            function zoomIn() {
+                const btn = document.querySelector('.df-ui-zoomIn') || document.querySelector('.df-ui-btn.ti-zoom-in') || document.querySelector('.df-ui-zoom-in');
+                if (btn) btn.click();
+                else {
+                    if (!flipInstance) return;
+                    if (flipInstance.zoomIn) flipInstance.zoomIn();
+                    else if (flipInstance.zoom && typeof flipInstance.zoom === 'function') flipInstance.zoom(0.2);
+                    else if (flipInstance.setZoom) flipInstance.setZoom((flipInstance.zoomLevel || 1) + 0.2);
                 }
             }
-        }
-
-        async function sendMessage(inputId, messagesId) {
-            const userInput = document.getElementById(inputId);
-            const messageText = userInput.value.trim();
-            if (!messageText) return;
-            const userMessageDiv = document.createElement('div');
-            userMessageDiv.className = 'message user-message';
-            userMessageDiv.textContent = messageText;
-            document.getElementById(messagesId).appendChild(userMessageDiv);
-            userInput.value = '';
-            userInput.focus();
-            const messages = document.getElementById(messagesId);
-            messages.scrollTop = messages.scrollHeight;
-            const typingDiv = document.createElement('div');
-            typingDiv.className = 'message bot-message typing-indicator';
-            typingDiv.innerHTML = '<span></span><span></span><span></span>';
-            messages.appendChild(typingDiv);
-            messages.scrollTop = messages.scrollHeight;
-            try {
-                const respuesta = await procesarMensaje(messageText);
-                const typingIndicator = messages.querySelector('.typing-indicator');
-                if (typingIndicator) typingIndicator.remove();
-                appendBotMessage(respuesta, messagesId);
-            } catch (error) {
-                console.error("Error procesando mensaje:", error);
-                const typingIndicator = messages.querySelector('.typing-indicator');
-                if (typingIndicator) typingIndicator.remove();
-                appendBotMessage("No pude procesar tu solicitud en este momento. ¿Podrías intentarlo de nuevo?", messagesId);
+            function zoomOut() {
+                const btn = document.querySelector('.df-ui-zoomOut') || document.querySelector('.df-ui-btn.ti-zoom-out') || document.querySelector('.df-ui-zoom-out');
+                if (btn) btn.click();
+                else {
+                    if (!flipInstance) return;
+                    if (flipInstance.zoomOut) flipInstance.zoomOut();
+                    else if (flipInstance.zoom && typeof flipInstance.zoom === 'function') flipInstance.zoom(-0.2);
+                    else if (flipInstance.setZoom) flipInstance.setZoom((flipInstance.zoomLevel || 1) - 0.2);
+                }
             }
-        }
 
-        function appendBotMessage(message, messagesId) {
-            const botMessageDiv = document.createElement('div');
-            botMessageDiv.className = 'message bot-message';
-            botMessageDiv.innerHTML = message;
-            document.getElementById(messagesId).appendChild(botMessageDiv);
-            const messages = document.getElementById(messagesId);
-            messages.scrollTop = messages.scrollHeight;
-        }
-
-        const mobileBubble = document.getElementById('mobileChatbotBubble');
-        const mobileWindow = document.getElementById('mobileChatbotWindow');
-        const closeMobile = document.getElementById('closeMobileChat');
-        if (mobileBubble && mobileWindow && closeMobile) {
-            mobileBubble.addEventListener('click', function () {
-                isMobileChatOpen = true;
-                mobileWindow.classList.add('active');
-                document.body.classList.add('chatbot-active');
-                document.body.style.overflow = 'hidden';
-                mobileBubble.classList.add('hidden');
-            });
-            closeMobile.addEventListener('click', function () {
-                isMobileChatOpen = false;
-                mobileWindow.classList.remove('active');
-                document.body.classList.remove('chatbot-active');
-                document.body.style.overflow = '';
-                mobileBubble.classList.remove('hidden');
-            });
-            let startY = 0;
-            mobileWindow.addEventListener('touchstart', function (e) {
-                startY = e.touches[0].clientY;
-            });
-            mobileWindow.addEventListener('touchmove', function (e) {
-                const currentY = e.touches[0].clientY;
-                if (currentY - startY > 100) {
-                    isMobileChatOpen = false;
-                    mobileWindow.classList.remove('active');
-                    document.body.classList.remove('chatbot-active');
-                    document.body.style.overflow = '';
-                    mobileBubble.classList.remove('hidden');
+            function updatePageInfoDisplay() {
+                if (!flipInstance) {
+                    document.getElementById('fcPageInput').value = '1';
+                    document.getElementById('fcTotalPages').innerText = '?';
+                    return;
                 }
-            });
-        }
-
-        window.addEventListener('resize', function () {
-            const whatsappLink = document.getElementById('whatsappLink');
-            const isMobile = window.innerWidth <= 768;
-            if (isMobile) {
-                whatsappLink.href = "https://wa.me/525543225189";
-                document.getElementById('whatsappFloat').classList.remove('hidden');
-                if (isMobileChatOpen) {
-                    document.getElementById('mobileChatbotBubble').classList.add('hidden');
-                } else {
-                    document.getElementById('mobileChatbotBubble').classList.remove('hidden');
+                let cur = flipInstance.currentPage || flipInstance._activePage || currentPageNum;
+                let total = flipInstance.pageCount || flipInstance.totalPages || totalPages;
+                if (typeof cur === 'number') currentPageNum = cur;
+                if (typeof total === 'number') totalPages = total;
+                const pageInput = document.getElementById('fcPageInput');
+                if (pageInput) {
+                    pageInput.value = currentPageNum;
+                    pageInput.max = totalPages;
                 }
-            } else {
-                whatsappLink.href = "https://web.whatsapp.com/send?phone=525543225189";
-                if (isDesktopChatOpen) {
-                    document.getElementById('whatsappFloat').classList.add('hidden');
-                } else {
-                    document.getElementById('whatsappFloat').classList.remove('hidden');
-                }
-                document.getElementById('mobileChatbotBubble').classList.add('hidden');
+                const totalSpan = document.getElementById('fcTotalPages');
+                if (totalSpan) totalSpan.innerText = totalPages;
             }
-        });
-    </script>
 
-    <!-- Script para ocultar preloader -->
-    <script>
-        window.addEventListener('load', function() {
-            setTimeout(function() {
-                const preloader = document.getElementById('preloader-container');
-                preloader.classList.add('fade-out');
+            // ========== INICIALIZACIÓN DEL FLIPBOOK CON OPCIONES ANTI-PARPADEO ==========
+            window.df_manual_book_options = {
+                webgl: false,
+                backgroundColor: '#ffffff',
+                paddingTop: 0,
+                paddingBottom: 0,
+                paddingLeft: 0,
+                paddingRight: 0,
+                hard: 'none',
+                autoEnableOutline: false,
+                autoEnableThumbnail: false,
+                zoomRatio: 1.6,
+                maxTextureSize: 1600,
+                singlePage: false,
+                duration: 600,
+                controlsPosition: 'bottom',
+                autoplay: false,
+                forceTextureSize: true,
+                preloadPages: 2,
+                renderWhileFlipping: true,
+                useCanvas: true,
+                transparent: false,
+                onReady: function(book) {
+                    flipInstance = book;
+                    if (flipInstance) {
+                        totalPages = flipInstance.pageCount || flipInstance.totalPages || 1;
+                        currentPageNum = flipInstance.currentPage || flipInstance._activePage || 1;
+                        updatePageInfoDisplay();
+                    }
+                    $('#df_manual_book').on('df-page-change', function(e, data) {
+                        if (data && data.page) currentPageNum = data.page;
+                        else if (flipInstance && flipInstance.currentPage) currentPageNum = flipInstance.currentPage;
+                        updatePageInfoDisplay();
+                        stabilizeRendering();
+                    });
+                    setTimeout(() => {
+                        updatePageInfoDisplay();
+                        hidePreloader();
+                        stabilizeRendering();
+                    }, 150);
+                }
+            };
+
+            // Monitorear la carga
+            let intervalRetry = setInterval(() => {
+                const $book = $('#df_manual_book');
+                let inst = $book.data('dflip') || $book.data('flipBook') || $book.data('df');
+                if (inst && inst.pageCount) {
+                    flipInstance = inst;
+                    totalPages = flipInstance.pageCount || 1;
+                    currentPageNum = flipInstance.currentPage || 1;
+                    updatePageInfoDisplay();
+                    hidePreloader();
+                    stabilizeRendering();
+                    if (intervalRetry) clearInterval(intervalRetry);
+                }
+                removeLoadingTexts();
+            }, 400);
+
+            // ========== VINCULAR CONTROLES ==========
+            function bindAllControls() {
+                const prevArrow = document.getElementById('fcPrevArrow');
+                const nextArrow = document.getElementById('fcNextArrow');
+                const prevBtn = document.getElementById('fcPrevBtn');
+                const nextBtn = document.getElementById('fcNextBtn');
+                const zoomInBtn = document.getElementById('fcZoomInBtn');
+                const zoomOutBtn = document.getElementById('fcZoomOutBtn');
+                const pageInput = document.getElementById('fcPageInput');
+
+                if (prevArrow) prevArrow.addEventListener('click', (e) => { e.preventDefault(); prevPage(); });
+                if (nextArrow) nextArrow.addEventListener('click', (e) => { e.preventDefault(); nextPage(); });
+                if (prevBtn) prevBtn.addEventListener('click', (e) => { e.preventDefault(); prevPage(); });
+                if (nextBtn) nextBtn.addEventListener('click', (e) => { e.preventDefault(); nextPage(); });
+                if (zoomInBtn) zoomInBtn.addEventListener('click', (e) => { e.preventDefault(); zoomIn(); });
+                if (zoomOutBtn) zoomOutBtn.addEventListener('click', (e) => { e.preventDefault(); zoomOut(); });
                 
-                setTimeout(function() {
-                    preloader.style.display = 'none';
-                }, 500);
-            }, 1000);
-        });
+                if (pageInput) {
+                    pageInput.addEventListener('change', function() {
+                        let val = parseInt(this.value, 10);
+                        if (isNaN(val)) val = 1;
+                        if (totalPages && val > totalPages) val = totalPages;
+                        if (val < 1) val = 1;
+                        safeGoToPage(val);
+                    });
+                    pageInput.addEventListener('keypress', function(e) {
+                        if (e.key === 'Enter') {
+                            let val = parseInt(this.value, 10);
+                            if (isNaN(val)) val = 1;
+                            if (totalPages && val > totalPages) val = totalPages;
+                            if (val < 1) val = 1;
+                            safeGoToPage(val);
+                            this.blur();
+                        }
+                    });
+                }
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                    if (e.key === 'ArrowRight') { nextPage(); e.preventDefault(); }
+                    if (e.key === 'ArrowLeft') { prevPage(); e.preventDefault(); }
+                    if (e.key === 'Home') { firstPage(); e.preventDefault(); }
+                    if (e.key === 'End') { lastPage(); e.preventDefault(); }
+                });
+            }
+
+            // Auto-ocultar controles
+            function initAutoHide() {
+                const controls = document.getElementById('flipControls');
+                const leftArrow = document.getElementById('fcPrevArrow');
+                const rightArrow = document.getElementById('fcNextArrow');
+                let timer;
+                function showAll() {
+                    if (controls) controls.classList.remove('hidden');
+                    if (leftArrow) leftArrow.classList.remove('hidden');
+                    if (rightArrow) rightArrow.classList.remove('hidden');
+                    clearTimeout(timer);
+                    timer = setTimeout(() => {
+                        if (controls) controls.classList.add('hidden');
+                        if (leftArrow) leftArrow.classList.add('hidden');
+                        if (rightArrow) rightArrow.classList.add('hidden');
+                    }, 3800);
+                }
+                const wrapper = document.getElementById('pdfWrapper');
+                if (wrapper) {
+                    wrapper.addEventListener('mousemove', showAll);
+                    wrapper.addEventListener('touchstart', showAll, { passive: true });
+                    if (controls) controls.addEventListener('mouseenter', () => clearTimeout(timer));
+                    if (controls) controls.addEventListener('mouseleave', showAll);
+                }
+                showAll();
+            }
+
+            // Ejecutar cuando todo esté cargado
+            window.addEventListener('load', () => {
+                setTimeout(() => {
+                    bindAllControls();
+                    initAutoHide();
+                    resizeFlipHeight();
+                    removeLoadingTexts();
+                }, 300);
+            });
+
+            // Ocultar preloader si pasa mucho tiempo
+            setTimeout(() => {
+                removeLoadingTexts();
+                hidePreloader();
+            }, 6000);
+
+        })();
     </script>
 </body>
 </html>

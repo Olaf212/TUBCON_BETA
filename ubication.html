@@ -2,22 +2,18 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <!-- IMPORTANTE: La meta viewport permite detectar orientación -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=yes">
   <title>TUBCON - Instalaciones</title>
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="public/images/iconoa.ico">
-  <!-- Font Awesome -->
+
+  <!-- Evitar el almacenamiento en caché del navegador -->
+  <meta http-equiv="Expires" content="0">
+  <meta http-equiv="Last-Modified" content="0">
+  <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <link rel="icon" type="image/png" href="/images/iconoa.ico">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <!-- CSS del Chatbot -->
-  <link rel="stylesheet" href="src/chatbot.css">
-  
   <style>
-    /* ==================== */
-    /* RESET Y ESTILOS BASE */
-    /* ==================== */
     * {
         margin: 0;
         padding: 0;
@@ -42,9 +38,7 @@
         overflow: hidden;
     }
 
-    /* ==================== */
-    /* HEADER - EXACTAMENTE IGUAL AL INDEX */
-    /* ==================== */
+    /* HEADER */
     header {
         position: fixed;
         top: 0;
@@ -55,8 +49,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: rgba(45, 45, 45, 0);
-        backdrop-filter: blur(5px);
+        background: transparent;
         transition: all 0.3s ease;
     }
 
@@ -82,16 +75,18 @@
     }
 
     .menu-desktop a {
-        color: white !important;
+        color: white;
         text-decoration: none;
         font-weight: 500;
         font-size: 1rem;
         transition: color 0.3s ease;
         position: relative;
         padding: 5px 0;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
 
-    .menu-desktop a:hover {
+    .menu-desktop a:hover,
+    .menu-desktop a.active {
         color: #EF0315 !important;
     }
 
@@ -117,26 +112,28 @@
         color: white !important;
         font-size: 1.8rem;
         cursor: pointer;
-        padding: 5px;
+        padding: 12px;
         z-index: 1001;
         transition: color 0.3s ease;
+        min-width: 44px;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
 
     .hamburger:hover {
         color: #EF0315 !important;
     }
 
-    /* ==================== */
-    /* SIDEBAR - IDÉNTICO AL INDEX */
-    /* ==================== */
+    /* SIDEBAR */
     #sidebar {
         position: fixed;
         top: 0;
         right: -300px;
         width: 300px;
         height: 100vh;
-        background: #2d2d2d;
-        box-shadow: -2px 0 15px rgba(0, 0, 0, 0);
+        background: rgba(45, 45, 45, 0.97);
         transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         z-index: 2000;
         display: flex;
@@ -147,9 +144,10 @@
 
     #sidebar.active {
         right: 0;
+        box-shadow: -5px 0 25px rgba(0, 0, 0, 0.4);
     }
 
-    #overlay {
+    #sidebar-overlay {
         position: fixed;
         top: 0;
         left: 0;
@@ -162,7 +160,7 @@
         transition: opacity 0.3s ease, visibility 0.3s ease;
     }
 
-    #overlay.active {
+    #sidebar-overlay.active {
         opacity: 1;
         visibility: visible;
     }
@@ -173,7 +171,7 @@
         align-items: center;
         margin-bottom: 30px;
         padding-bottom: 15px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .sidebar-logo {
@@ -187,17 +185,25 @@
     }
 
     .close-sidebar {
-        background: none;
+        background: rgba(255, 255, 255, 0.1);
         border: none;
-        font-size: 1.8rem;
-        color: #333;
+        font-size: 1.5rem;
+        color: #ffffff;
         cursor: pointer;
-        padding: 5px;
+        padding: 8px;
         margin-left: 15px;
+        border-radius: 8px;
+        min-width: 40px;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
     }
 
     .close-sidebar:hover {
-        color: #EF0315;
+        color: white;
+        background: #EF0315;
     }
 
     #sidebar ul {
@@ -211,7 +217,7 @@
     }
 
     #sidebar a {
-        color: #333;
+        color: #ffffff;
         text-decoration: none;
         font-size: 1.1rem;
         display: block;
@@ -221,83 +227,31 @@
         border-left: 3px solid transparent;
     }
 
-    /* FIX DEFINITIVO VISIBILIDAD SIDEBAR MOBILE */
-    #sidebar ul li a {
-        color: #ffffff !important;
-        opacity: 1 !important;
-        filter: none !important;
-        mix-blend-mode: normal !important;
-    }
-
-    /* ESTADO ACTIVO SIDEBAR */
-    #sidebar a.active {
-        background: #fff5f5;
-        color: #EF0315 !important;
-        font-weight: 600;
-        border-left: 3px solid #EF0315;
-        padding-left: 20px;
-    }
-
     #sidebar a:hover {
-        background: #f8f9fa;
+        background: rgba(239, 3, 21, 0.1);
         color: #EF0315;
         border-left-color: #EF0315;
         padding-left: 20px;
     }
 
-    #sidebar a[style*="color:#EF0315"] {
+    #sidebar a[style*="color:#EF0315"],
+    #sidebar a.active {
         color: #EF0315 !important;
         font-weight: 600;
         border-left-color: #EF0315;
-        background: #fff5f5;
+        background: rgba(239, 3, 21, 0.15);
         padding-left: 20px;
     }
 
-    .sidebar-bottom {
-        margin-top: auto;
-        padding-top: 30px;
-        border-top: 1px solid #eee;
-    }
-
-    .sidebar-bottom a {
-        display: block;
-        padding: 10px 0;
-        color: #333;
-        text-decoration: none;
-        border-left: none !important;
-        border-radius: 0;
-    }
-
-    .sidebar-bottom a:hover {
-        background: transparent;
-        color: #EF0315;
-        padding-left: 15px;
-    }
-
-    .sidebar-bottom a[style*="color: #EF0315"] {
-        color: #EF0315 !important;
-        font-weight: bold;
-        margin-bottom: 15px;
-    }
-
-    .sidebar-bottom a i {
-        margin-right: 10px;
-        width: 20px;
-        text-align: center;
-    }
-
-    /* ==================== */
-    /* HERO SECTION - VIDEO RESPONSIVO CON TEXTO */
-    /* ==================== */
+    /* HERO SECTION */
     .hero-section {
         position: relative;
         height: 100vh;
+        width: 100%;
         overflow: hidden;
-        margin-top: 0;
         background: #000;
     }
 
-    /* Video para modo horizontal */
     .hero-video-horizontal {
         position: absolute;
         top: 0;
@@ -308,7 +262,6 @@
         z-index: 1;
     }
 
-    /* Video para modo vertical - SOLO UN VIDEO */
     .hero-video-vertical {
         position: absolute;
         top: 0;
@@ -316,17 +269,27 @@
         width: 100%;
         height: 100%;
         display: none;
-        z-index: 2;
+        z-index: 1;
     }
     
     .hero-video-vertical video {
         width: 100%;
         height: 100%;
-        object-fit: contain;
+        object-fit: cover;
         background: #000;
     }
 
-    /* CONTENEDOR DEL TEXTO SUPERPUESTO - VISIBLE EN AMBAS ORIENTACIONES */
+    .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.45);
+        z-index: 2;
+        pointer-events: none;
+    }
+
     .hero-text {
         position: absolute;
         top: 50%;
@@ -334,11 +297,10 @@
         transform: translate(-50%, -50%);
         text-align: center;
         color: white;
-        z-index: 4;
+        z-index: 3;
         width: 90%;
         max-width: 900px;
         pointer-events: none;
-        text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
         animation: fadeIn 1.5s ease;
     }
 
@@ -347,7 +309,7 @@
         font-weight: 800;
         margin-bottom: 20px;
         letter-spacing: 5px;
-        color: white; /* AHORA ES BLANCO */
+        color: white;
         text-transform: uppercase;
         text-shadow: 3px 3px 0 rgba(0,0,0,0.5), 5px 5px 15px rgba(0,0,0,0.8);
         animation: pulse 3s infinite;
@@ -359,6 +321,7 @@
         margin-bottom: 30px;
         letter-spacing: 2px;
         color: white;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
 
     .hero-text .btn {
@@ -396,54 +359,6 @@
         to { opacity: 1; transform: translate(-50%, -50%); }
     }
 
-    /* Media query para orientación vertical */
-    @media (orientation: portrait) {
-        .hero-video-horizontal {
-            display: none;
-        }
-        .hero-video-vertical {
-            display: block;
-        }
-        .hero-text {
-            display: block; /* AHORA SE MUESTRA EN VERTICAL */
-        }
-        /* Ajuste de tamaño de texto para vertical */
-        .hero-text h1 {
-            font-size: 3.5rem;
-        }
-        .hero-text p {
-            font-size: 1.5rem;
-        }
-        .hero-text .btn {
-            padding: 12px 30px;
-            font-size: 1.1rem;
-        }
-    }
-
-    /* Media query para orientación horizontal */
-    @media (orientation: landscape) {
-        .hero-video-horizontal {
-            display: block;
-        }
-        .hero-video-vertical {
-            display: none;
-        }
-        .hero-text {
-            display: block;
-        }
-    }
-
-    .hero-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 3;
-        pointer-events: none;
-    }
-
     .scroll-indicator {
         position: absolute;
         bottom: 40px;
@@ -453,226 +368,398 @@
         font-size: 2rem;
         animation: bounce 2s infinite;
         cursor: pointer;
-        z-index: 4;
+        z-index: 3;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
     }
 
     @keyframes bounce {
-        0%, 20%, 50%, 80%, 100% {
-            transform: translateX(-50%) translateY(0);
-        }
-        40% {
-            transform: translateX(-50%) translateY(-10px);
-        }
-        60% {
-            transform: translateX(-50%) translateY(-5px);
-        }
+        0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+        40% { transform: translateX(-50%) translateY(-10px); }
+        60% { transform: translateX(-50%) translateY(-5px); }
     }
 
-    /* ==================== */
-    /* GALERÍA TIPO DIAPOSITIVA */
-    /* ==================== */
+    @media (orientation: portrait) {
+        .hero-video-horizontal { display: none; }
+        .hero-video-vertical { display: block; }
+        .hero-text h1 { font-size: 3rem; }
+        .hero-text p { font-size: 1.3rem; }
+        .hero-text .btn { padding: 12px 30px; font-size: 1rem; }
+    }
+
+    @media (orientation: landscape) {
+        .hero-video-horizontal { display: block; }
+        .hero-video-vertical { display: none; }
+    }
+
+    /* CARRUSEL PREMIUM */
     .slideshow-section {
-        padding: 100px 20px;
-        background: white;
+        padding: 100px 0 80px;
+        background: #0f0f0f;
         text-align: center;
+        overflow: hidden;
     }
 
     .section-title {
         font-size: 2.5rem;
-        color: #2d2d2d;
+        color: #ffffff;
         margin-bottom: 15px;
-        font-weight: 700;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
     }
 
     .section-subtitle {
-        color: #666;
-        font-size: 1.1rem;
-        margin-bottom: 50px;
-        max-width: 700px;
+        color: rgba(255,255,255,0.55);
+        font-size: 1.05rem;
+        margin-bottom: 55px;
+        max-width: 600px;
         margin-left: auto;
         margin-right: auto;
+        line-height: 1.7;
     }
 
-    .slideshow-container {
+    .carousel-wrapper {
         position: relative;
-        max-width: 1200px;
-        height: 600px;
-        margin: 0 auto 40px;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 1400px;
+        margin: 0 auto;
+        height: 560px;
+        perspective: 1200px;
     }
 
-    .slideshow-slide {
-        position: absolute;
-        top: 0;
-        left: 0;
+    .carousel-track {
+        position: relative;
         width: 100%;
         height: 100%;
+    }
+
+    .carousel-card {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 700px;
+        height: 480px;
+        transform: translateX(-50%) translateY(-50%);
+        border-radius: 20px;
+        overflow: hidden;
+        transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        cursor: pointer;
+        box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    }
+
+    .carousel-card.hidden {
         opacity: 0;
-        transition: opacity 1s ease-in-out;
+        z-index: 0;
+        transform: translateX(-50%) translateY(-50%) scale(0.5);
+        pointer-events: none;
     }
 
-    .slideshow-slide.active {
-        opacity: 1;
-    }
-
-    .slideshow-slide img {
+    .carousel-card img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+        transition: transform 0.6s ease;
     }
 
-    .slideshow-caption {
+    .carousel-card:hover img {
+        transform: scale(1.04);
+    }
+
+    .carousel-card.prev {
+        transform: translateX(calc(-50% - 420px)) translateY(-50%) scale(0.82) rotateY(12deg);
+        opacity: 0.45;
+        z-index: 1;
+        filter: brightness(0.6);
+        cursor: pointer;
+    }
+
+    .carousel-card.active {
+        transform: translateX(-50%) translateY(-50%) scale(1) rotateY(0deg);
+        opacity: 1;
+        z-index: 3;
+        filter: brightness(1);
+    }
+
+    .carousel-card.next {
+        transform: translateX(calc(-50% + 420px)) translateY(-50%) scale(0.82) rotateY(-12deg);
+        opacity: 0.45;
+        z-index: 1;
+        filter: brightness(0.6);
+        cursor: pointer;
+    }
+
+    .carousel-card.active::after {
+        content: '';
         position: absolute;
         bottom: 0;
         left: 0;
-        width: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        color: white;
-        padding: 20px;
-        font-size: 1.3rem;
-        text-align: center;
+        right: 0;
+        height: 35%;
+        background: linear-gradient(transparent, rgba(0,0,0,0.75));
+        pointer-events: none;
+        border-radius: 0 0 20px 20px;
     }
 
-    .slideshow-controls {
+    .carousel-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(255,255,255,0.08);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.15);
+        color: white;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 10;
         display: flex;
-        justify-content: center;
         align-items: center;
-        gap: 30px;
-        margin-top: 20px;
+        justify-content: center;
     }
 
-    .slideshow-btn {
+    .carousel-btn:hover {
         background: #EF0315;
-        color: white;
-        border: none;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        font-size: 1.2rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
+        border-color: #EF0315;
+        transform: translateY(-50%) scale(1.1);
     }
 
-    .slideshow-btn:hover {
-        background: #d00212;
-        transform: scale(1.1);
-    }
+    .carousel-btn.btn-prev { left: 30px; }
+    .carousel-btn.btn-next { right: 30px; }
 
-    .slideshow-dots {
-        display: flex;
-        gap: 10px;
-    }
-
-    .slideshow-dot {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #ccc;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .slideshow-dot.active {
-        background: #EF0315;
-        transform: scale(1.2);
-    }
-
-    .slideshow-thumbnails {
+    .carousel-dots {
         display: flex;
         justify-content: center;
-        gap: 15px;
-        margin-top: 30px;
-        flex-wrap: wrap;
-        max-width: 1200px;
-        margin-left: auto;
-        margin-right: auto;
+        gap: 8px;
+        margin-top: 35px;
     }
 
-    .thumbnail {
-        width: 120px;
-        height: 80px;
-        border-radius: 8px;
-        overflow: hidden;
+    .carousel-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.25);
         cursor: pointer;
-        opacity: 0.6;
         transition: all 0.3s ease;
-        border: 3px solid transparent;
+        border: none;
+        padding: 0;
     }
 
-    .thumbnail.active {
-        opacity: 1;
-        border-color: #EF0315;
-        transform: scale(1.05);
+    .carousel-dot.active {
+        background: #EF0315;
+        width: 28px;
+        border-radius: 4px;
     }
 
-    .thumbnail img {
-        width: 100%;
+    .carousel-progress {
+        width: 200px;
+        height: 3px;
+        background: rgba(255,255,255,0.15);
+        border-radius: 3px;
+        margin: 20px auto 0;
+        overflow: hidden;
+    }
+
+    .carousel-progress-bar {
         height: 100%;
-        object-fit: cover;
+        background: linear-gradient(90deg, #EF0315, #ff6b6b);
+        border-radius: 3px;
+        transition: width 0.1s linear;
+        width: 0%;
     }
 
-    /* ==================== */
-    /* GRID DE IMÁGENES ADICIONALES */
-    /* ==================== */
-    .gallery-section {
+    @media (max-width: 768px) {
+        .carousel-wrapper { height: 75vw; }
+        .carousel-card { width: 78vw; height: 65vw; }
+        .carousel-card.prev { transform: translateX(calc(-50% - 48vw)) translateY(-50%) scale(0.85) rotateY(8deg); }
+        .carousel-card.next { transform: translateX(calc(-50% + 48vw)) translateY(-50%) scale(0.85) rotateY(-8deg); }
+        .carousel-btn { width: 40px; height: 40px; font-size: 0.9rem; }
+        .carousel-btn.btn-prev { left: 8px; }
+        .carousel-btn.btn-next { right: 8px; }
+    }
+
+    /* COLLAGE SECTION */
+    .collage-section {
         padding: 80px 20px;
-        background: #f8f9fa;
+        background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%);
     }
 
-    .gallery-grid {
+    .collage-section .section-title {
+        color: #2d2d2d;
+    }
+
+    .collage-section .section-subtitle {
+        color: #666;
+    }
+
+    .collage-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 25px;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
         max-width: 1400px;
         margin: 0 auto;
     }
 
-    .gallery-item {
+    .collage-item {
         position: relative;
         border-radius: 12px;
         overflow: hidden;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        transition: all 0.3s ease;
-        height: 300px;
+        transition: all 0.4s ease;
+        aspect-ratio: 1 / 1;
+        cursor: pointer;
     }
 
-    .gallery-item:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    .collage-item:hover {
+        transform: scale(1.02);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
     }
 
-    .gallery-item img {
+    .collage-item img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         transition: transform 0.5s ease;
     }
 
-    .gallery-item:hover img {
-        transform: scale(1.1);
+    .collage-item:hover img {
+        transform: scale(1.08);
     }
 
-    .gallery-overlay {
+    .collage-overlay {
         position: absolute;
         bottom: 0;
         left: 0;
         right: 0;
-        background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
         color: white;
         padding: 20px;
         transform: translateY(100%);
         transition: transform 0.3s ease;
     }
 
-    .gallery-item:hover .gallery-overlay {
+    .collage-item:hover .collage-overlay {
         transform: translateY(0);
     }
 
-    /* ==================== */
-    /* SECCIÓN UBICACIÓN */
-    /* ==================== */
+    /* Botones Ver Todo / Ver Menos */
+    .btn-ver-todo {
+        display: flex;
+        justify-content: center;
+        margin-top: 40px;
+    }
+
+    .ver-todo-btn {
+        background: #EF0315;
+        color: white;
+        border: none;
+        padding: 14px 40px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 20px rgba(239, 3, 21, 0.3);
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .ver-todo-btn:hover {
+        background: #d0021b;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(239, 3, 21, 0.4);
+    }
+
+    .ver-todo-btn i {
+        font-size: 1rem;
+    }
+
+    /* CAPACITACIONES */
+    .training-section {
+        padding: 100px 20px;
+        background: linear-gradient(135deg, #1f1f1f 0%, #111 100%);
+        color: white;
+        text-align: center;
+        position: relative;
+    }
+
+    .training-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #EF0315, #ff6b6b);
+    }
+
+    .training-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 25px;
+    }
+
+    .training-icon {
+        width: 90px;
+        height: 90px;
+        background: rgba(239, 3, 21, 0.1);
+        color: #EF0315;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.8rem;
+        border: 1px solid rgba(239, 3, 21, 0.3);
+    }
+
+    .training-content h2 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 20px;
+        text-transform: uppercase;
+    }
+
+    .training-content p {
+        font-size: 1.25rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.85);
+        margin-bottom: 40px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .training-content p span {
+        color: #EF0315;
+        font-weight: 600;
+    }
+
+    .training-content .btn {
+        display: inline-block;
+        padding: 15px 40px;
+        background: #EF0315;
+        color: white;
+        text-decoration: none;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        border: 2px solid transparent;
+    }
+
+    .training-content .btn:hover {
+        background: transparent;
+        border-color: #EF0315;
+        transform: translateY(-3px);
+    }
+
+    /* UBICACIÓN */
     .location-section {
         padding: 100px 20px;
         background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -764,58 +851,8 @@
         height: 100%;
     }
 
-    /* ==================== */
-    /* FOOTER */
-    /* ==================== */
-    footer {
-        background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-        color: white;
-        padding: 60px 20px 30px;
-        text-align: center;
-        position: relative;
-        overflow: hidden;
-    }
 
-    footer::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        height: 5px;
-        background: linear-gradient(90deg, #EF0315, #ff6b6b);
-    }
-
-    footer p {
-        margin: 0;
-        font-size: 1rem;
-        color: rgba(255, 255, 255, 0.8);
-    }
-
-    /* ==================== */
-    /* PRELOADER */
-    /* ==================== */
-    #preloader-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: white;
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: opacity 0.5s ease;
-    }
-
-    #preloader-container.fade-out {
-        opacity: 0;
-    }
-
-    /* ==================== */
-    /* MODAL PARA IMÁGENES */
-    /* ==================== */
+    /* MODAL */
     .modal {
         display: none;
         position: fixed;
@@ -848,348 +885,166 @@
         color: white;
         font-size: 50px;
         cursor: pointer;
-        transition: color 0.3s ease;
-        z-index: 3001;
         background: none;
         border: none;
         width: 60px;
         height: 60px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
     }
 
     .close-modal:hover {
         color: #EF0315;
     }
 
-    .modal-caption {
-        position: absolute;
-        bottom: 40px;
-        left: 0;
-        width: 100%;
-        text-align: center;
-        color: white;
-        font-size: 1.2rem;
-        padding: 0 20px;
-        background: rgba(0, 0, 0, 0.7);
-        padding: 15px;
-        margin: 0;
-    }
-
-    /* ==================== */
-    /* RESPONSIVE */
-    /* ==================== */
-    @media (max-width: 1200px) {
-        .slideshow-container {
-            height: 500px;
-        }
-    }
-
     @media (max-width: 992px) {
-        .menu-desktop {
-            display: none;
-        }
-
-        .hamburger {
-            display: block;
-        }
-
-        .slideshow-container {
-            height: 400px;
-        }
-
-        .location-container {
-            grid-template-columns: 1fr;
-            gap: 40px;
-        }
-
-        .map-container {
-            height: 400px;
-            order: -1;
-        }
-        
-        .hero-text h1 {
-            font-size: 4rem;
-        }
-        
-        .hero-text p {
-            font-size: 1.5rem;
-        }
+        .menu-desktop { display: none; }
+        .hamburger { display: flex; }
+        .location-container { grid-template-columns: 1fr; }
+        .map-container { order: -1; }
     }
 
     @media (max-width: 768px) {
-        header {
-            padding: 15px 20px;
-        }
-
-        .slideshow-section,
-        .gallery-section,
-        .location-section {
-            padding: 80px 20px;
-        }
-
-        .section-title {
-            font-size: 2rem;
-        }
-
-        .slideshow-container {
-            height: 350px;
-        }
-
-        .slideshow-caption {
-            font-size: 1.1rem;
-            padding: 15px;
-        }
-
-        .gallery-grid {
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-        }
-
-        .gallery-item {
-            height: 250px;
-        }
-
-        .location-info {
-            padding: 30px 20px;
-        }
-
-        .location-info h2 {
-            font-size: 2rem;
-        }
-
-        .thumbnail {
-            width: 100px;
-            height: 70px;
-        }
-
-        #sidebar {
-            width: 280px;
-            padding: 25px 20px;
-        }
-        
-        .hero-text h1 {
-            font-size: 3rem;
-        }
-        
-        .hero-text p {
-            font-size: 1.2rem;
-        }
-        
-        .hero-text .btn {
-            padding: 12px 30px;
-            font-size: 1rem;
-        }
+        header { padding: 15px 20px; }
+        .collage-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+        .training-content h2 { font-size: 1.8rem; }
+        .training-content p { font-size: 1rem; }
     }
 
     @media (max-width: 576px) {
-        .slideshow-container {
-            height: 300px;
-        }
-
-        .section-title {
-            font-size: 1.8rem;
-        }
-
-        .slideshow-controls {
-            gap: 15px;
-        }
-
-        .slideshow-btn {
-            width: 40px;
-            height: 40px;
-            font-size: 1rem;
-        }
-
-        .gallery-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .gallery-item {
-            height: 280px;
-        }
-
-        .detail-item {
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .detail-icon {
-            margin-right: 0;
-            margin-bottom: 15px;
-        }
-
-        .map-container {
-            height: 350px;
-        }
-
-        .thumbnail {
-            width: 80px;
-            height: 60px;
-        }
-
-        #sidebar {
-            width: 85%;
-            max-width: 300px;
-        }
-        
-        .hero-text h1 {
-            font-size: 2.2rem;
-        }
-        
-        .hero-text p {
-            font-size: 1rem;
-        }
+        .collage-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
     }
-
-    /* Ajustes específicos para vertical en móviles muy pequeños */
-    @media (orientation: portrait) and (max-width: 480px) {
-        .hero-text h1 {
-            font-size: 2.5rem;
+        /* REGLA DEFINITIVA PARA OCULTAR ICONOS CUANDO EL MENÚ ESTÁ ABIERTO */
+        body.menu-open .whatsapp-float, 
+        body.menu-open .cart-icon {
+            display: none !important;
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none !important;
         }
-        .hero-text p {
-            font-size: 1.1rem;
-        }
-        .hero-text .btn {
-            padding: 10px 25px;
-            font-size: 0.9rem;
-        }
-    }
   </style>
 </head>
 <body>
-  <!-- PRELOADER EXTERNO -->
-  <div id="preloader-container">
-    <iframe src="preloader.html" frameborder="0" style="width:100%; height:100%;"></iframe>
-  </div>
 
-  <!-- HEADER - EXACTAMENTE IGUAL AL INDEX -->
   <header id="mainHeader">
     <div class="logo">
       <a href="index.html">
-        <img src="public/images/logo.png" class="logo" alt="TUBCON S.A. de C.V." />
+        <img src="images/logo.png" alt="TUBCON S.A. de C.V." />
       </a>
     </div>
 
-    <!-- Menú desktop - IGUAL AL INDEX -->
     <nav class="menu-desktop">
       <ul>
         <li><a href="index.html">Inicio</a></li>
         <li><a href="products.html">Productos</a></li>
-        <li><a href="ubication.html" style="color:#EF0315">Instalaciones</a></li>
+        <li><a href="ubication.html" class="active">Instalaciones</a></li>
         <li><a href="email.html">Asesoría</a></li>
-        <li><a href="catalogo.html">Catalogo</a></li>
+        <li><a href="catalogo.html">Catálogo</a></li>
       </ul>
     </nav>
 
-    <!-- Botón hamburguesa - BLANCO -->
     <button class="hamburger" id="hamburger">
       <i class="fas fa-bars"></i>
     </button>
   </header>
 
-  <!-- SIDEBAR EXACTAMENTE IGUAL AL INDEX -->
-    <nav id="sidebar">
-        <div class="sidebar-header">
-            <div class="sidebar-logo">
-                <img src="public/images/logo.png" alt="TUBCON S.A. de C.V.">
-            </div>
-            <button class="close-sidebar" id="closeSidebar">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <img src="images/logo.png" alt="TUBCON S.A. de C.V.">
+      </div>
+      <button class="close-sidebar" id="closeSidebar">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <ul>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="products.html">Productos</a></li>
+      <li><a href="ubication.html" class="active">Instalaciones</a></li>
+      <li><a href="email.html">Asesoría</a></li>
+      <li><a href="catalogo.html">Catálogo</a></li>
+    </ul>
+  </nav>
 
-        <ul>
-            <li><a href="index.html">Inicio</a></li>
-            <li><a href="products.html">Productos</a></li>
-            <li><a href="ubication.html" style="color:#EF0315">Instalaciones</a></li>
-            <li><a href="email.html">Asesoría</a></li>
-            <li><a href="catalogo.html">Catalogo</a></li>
-        </ul>
-    </nav>
+  <div id="sidebar-overlay"></div>
 
-  <!-- OVERLAY PARA EL SIDEBAR -->
-  <div id="overlay"></div>
-
-  <!-- MODAL PARA IMÁGENES -->
   <div class="modal" id="imageModal">
     <button class="close-modal" id="closeModal">&times;</button>
     <img class="modal-content" alt="" id="modalImage">
     <p class="modal-caption" id="modalCaption"></p>
   </div>
 
-  <!-- HERO SECTION - CON TEXTO EN AMBAS ORIENTACIONES -->
   <section class="hero-section">
-    <!-- VIDEO HORIZONTAL: se muestra en landscape -->
     <video class="hero-video-horizontal" autoplay muted loop playsinline>
-      <source src="public/video/presentacion.mp4" type="video/mp4">
-      Tu navegador no soporta el elemento de video.
+      <source src="/video/presentacion.mp4" type="video/mp4">
     </video>
-
-    <!-- VIDEO VERTICAL: se muestra en portrait -->
     <div class="hero-video-vertical">
       <video autoplay muted loop playsinline>
         <source src="/public/video/18.mp4" type="video/mp4">
-        Tu navegador no soporta el elemento de video.
       </video>
     </div>
-    
-    <!-- TEXTO SUPERPUESTO - VISIBLE EN HORIZONTAL Y VERTICAL -->
+    <div class="hero-overlay"></div>
     <div class="hero-text">
       <h1>VISÍTANOS</h1>
       <p>Conoce nuestras instalaciones</p>
-      <a href="#location" class="btn">¿CÓMO LLEGAR?</a>
+      <a href="https://www.google.com/maps/dir/?api=1&destination=19.683913,-98.876015" class="btn" target="_blank">¿CÓMO LLEGAR?</a>
     </div>
-    
-    <div class="hero-overlay"></div>
-    
-    <div class="scroll-indicator" onclick="scrollToSlideshow()">
+    <div class="scroll-indicator" onclick="document.getElementById('slideshow').scrollIntoView({ behavior: 'smooth' })">
       <i class="fas fa-chevron-down"></i>
     </div>
   </section>
 
-  <!-- SECCIÓN SLIDESHOW (DIAPOSITIVAS) -->
   <section class="slideshow-section" id="slideshow">
     <h2 class="section-title">Galería de Instalaciones</h2>
-    <p class="section-subtitle">
-      Descubre nuestras instalaciones, equipo y eventos de convivencia.
-    </p>
+    <p class="section-subtitle">Descubre nuestras instalaciones, equipo y eventos de convivencia.</p>
+    <div class="carousel-wrapper">
+      <div class="carousel-track" id="carouselTrack"></div>
+      <button class="carousel-btn btn-prev" id="carouselPrev"><i class="fas fa-chevron-left"></i></button>
+      <button class="carousel-btn btn-next" id="carouselNext"><i class="fas fa-chevron-right"></i></button>
+    </div>
+    <div class="carousel-dots" id="carouselDots"></div>
+    <div class="carousel-progress">
+      <div class="carousel-progress-bar" id="carouselProgressBar"></div>
+    </div>
+  </section>
+
+  <!-- COLLAGE SECTION -->
+  <section class="collage-section">
+    <h2 class="section-title">Collage de Imágenes</h2>
     
-    <div class="slideshow-container" id="slideshowContainer"></div>
-    
-    <div class="slideshow-controls">
-      <button class="slideshow-btn" id="prevBtn">
-        <i class="fas fa-chevron-left"></i>
-      </button>
-      <div class="slideshow-dots" id="slideshowDots"></div>
-      <button class="slideshow-btn" id="nextBtn">
-        <i class="fas fa-chevron-right"></i>
+    <div class="collage-grid" id="collageGrid">
+      <div style="text-align: center; padding: 50px; grid-column: 1/-1;">
+        <i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: #EF0315;"></i>
+        <p>Buscando imágenes...</p>
+      </div>
+    </div>
+    <div class="btn-ver-todo" id="btnVerTodoContainer" style="display: none;">
+      <button class="ver-todo-btn" id="verTodoBtn">
+        <i class="fas fa-images"></i> Ver todas las imágenes
       </button>
     </div>
-    
-    <div class="slideshow-thumbnails" id="slideshowThumbnails"></div>
   </section>
 
-  <!-- SECCIÓN GALERÍA ADICIONAL -->
-  <section class="gallery-section">
-    <h2 class="section-title">Más Imágenes</h2>
-    <p class="section-subtitle">
-      Conoce a detalle cada una de nuestras áreas de trabajo y servicios.
-    </p>
-    <div class="gallery-grid" id="galleryGrid"></div>
+  <section class="training-section">
+    <div class="training-container">
+      <div class="training-icon">
+        <i class="fas fa-graduation-cap"></i>
+      </div>
+      <div class="training-content">
+        <h2>Capacitación Continua</h2>
+        <p>En <strong>TUBCON</strong>, el crecimiento profesional es nuestra prioridad. Por eso, ofrecemos <span>capacitaciones constantes para todos nuestros plomeros</span> sin distinciones. Nos aseguramos de mantener a nuestro equipo actualizado con las herramientas y técnicas más modernas del mercado, garantizando que cada instalación sea segura y de la máxima calidad.</p>
+        <a href="https://wa.me/525543225189?text=Hola,%20vi%20su%20sitio%20web%20y%20me%20gustar%C3%ADa%20saber%20si%20tienen%20vacantes%20disponibles.%20Quedo%20atento." 
+class="btn" 
+target="_blank">
+Únete a nuestro equipo
+</a>
+      </div>
+    </div>
   </section>
 
-  <!-- SECCIÓN UBICACIÓN -->
   <section class="location-section" id="location">
     <div class="location-container">
       <div class="location-info">
         <h2>Nuestra Ubicación</h2>
-        <p>
-          Estamos estratégicamente ubicados en Teotihuacán, Estado de México, 
-          para servirte con la mejor calidad y atención personalizada.
-        </p>
-        
+        <p>Estamos estratégicamente ubicados en Teotihuacán, Estado de México, para servirte con la mejor calidad y atención personalizada.</p>
         <div class="location-details">
           <div class="detail-item">
             <div class="detail-icon"><i class="fas fa-map-marker-alt"></i></div>
@@ -1221,30 +1076,23 @@
           </div>
         </div>
       </div>
-      
       <div class="map-container">
         <div id="map"></div>
       </div>
     </div>
   </section>
 
-  <footer>
-    <p>© 2025 TUBCON S.A. de C.V. Todos los derechos reservados.</p>
-  </footer>
 
-  <!-- SCRIPTS -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
+      // HEADER SCROLL
       const header = document.getElementById('mainHeader');
       const hamburger = document.getElementById('hamburger');
       const closeSidebar = document.getElementById('closeSidebar');
       const sidebar = document.getElementById('sidebar');
-      const overlay = document.getElementById('overlay');
+      const sidebarOverlay = document.getElementById('sidebar-overlay');
       const body = document.body;
-      
-      // HEADER - EXACTAMENTE IGUAL AL INDEX
-      header.classList.remove('scrolled');
       
       function handleScroll() {
         if (window.scrollY > 50) {
@@ -1257,157 +1105,268 @@
       window.addEventListener('scroll', handleScroll);
       handleScroll();
       
-      // MENÚ MÓVIL - IGUAL AL INDEX
+      // SIDEBAR
       function openSidebar() {
         sidebar.classList.add('active');
-        overlay.classList.add('active');
+        sidebarOverlay.classList.add('active');
         body.classList.add('menu-open');
       }
       
       function closeSidebarFunc() {
         sidebar.classList.remove('active');
-        overlay.classList.remove('active');
+        sidebarOverlay.classList.remove('active');
         body.classList.remove('menu-open');
       }
       
       hamburger.addEventListener('click', openSidebar);
       closeSidebar.addEventListener('click', closeSidebarFunc);
-      overlay.addEventListener('click', closeSidebarFunc);
+      sidebarOverlay.addEventListener('click', closeSidebarFunc);
       
       document.querySelectorAll('#sidebar a').forEach(link => {
         link.addEventListener('click', closeSidebarFunc);
       });
       
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && sidebar.classList.contains('active')) {
-          closeSidebarFunc();
+      // CARRUSEL
+      const carouselImages = [
+        'images/galeria/g1.jpg',
+        'images/galeria/g2.jpg',
+        'images/galeria/g3.jpg',
+        'images/galeria/g4.jpg',
+        'images/galeria/g5.jpg',
+        'images/galeria/g6.jpg',
+        'images/galeria/g7.jpg',
+        'images/galeria/g8.jpg',
+        'images/galeria/g9.jpg',
+        'images/galeria/g10.jpg'
+      ];
+
+      let carouselIdx = 0;
+      let carouselTimer;
+      let carouselProgress = 0;
+      let carouselProgressTimer;
+      const CAROUSEL_INTERVAL = 5000;
+      const carouselTrack = document.getElementById('carouselTrack');
+      const carouselDotsEl = document.getElementById('carouselDots');
+      const carouselProgressBar = document.getElementById('carouselProgressBar');
+
+      function buildCarousel() {
+        if (!carouselTrack || !carouselDotsEl) return;
+        carouselTrack.innerHTML = '';
+        carouselDotsEl.innerHTML = '';
+        carouselImages.forEach((src, i) => {
+          const card = document.createElement('div');
+          card.className = 'carousel-card';
+          card.innerHTML = `<img src="${src}" alt="Instalación ${i+1}" loading="lazy"><div class="card-shine"></div>`;
+          card.addEventListener('click', () => { if (i !== carouselIdx) carouselGoTo(i); });
+          carouselTrack.appendChild(card);
+
+          const dot = document.createElement('button');
+          dot.className = 'carousel-dot';
+          dot.addEventListener('click', () => carouselGoTo(i));
+          carouselDotsEl.appendChild(dot);
+        });
+        carouselRender();
+        carouselStartAuto();
+      }
+
+      function carouselRender() {
+        const cards = carouselTrack.querySelectorAll('.carousel-card');
+        const dots = carouselDotsEl.querySelectorAll('.carousel-dot');
+        const n = carouselImages.length;
+        const prev = (carouselIdx - 1 + n) % n;
+        const next = (carouselIdx + 1) % n;
+
+        cards.forEach((c, i) => {
+          c.className = 'carousel-card';
+          if (i === carouselIdx) c.classList.add('active');
+          else if (i === prev) c.classList.add('prev');
+          else if (i === next) c.classList.add('next');
+          else c.classList.add('hidden');
+        });
+        dots.forEach((d, i) => d.classList.toggle('active', i === carouselIdx));
+      }
+
+      function carouselGoTo(index) {
+        carouselIdx = (index + carouselImages.length) % carouselImages.length;
+        carouselRender();
+        carouselResetProgress();
+      }
+
+      function carouselStartAuto() {
+        clearInterval(carouselTimer);
+        carouselResetProgress();
+        carouselTimer = setInterval(() => carouselGoTo(carouselIdx + 1), CAROUSEL_INTERVAL);
+      }
+
+      function carouselResetProgress() {
+        clearInterval(carouselProgressTimer);
+        carouselProgress = 0;
+        if (carouselProgressBar) {
+          carouselProgressBar.style.width = '0%';
+          carouselProgressTimer = setInterval(() => {
+            carouselProgress += 100 / (CAROUSEL_INTERVAL / 100);
+            if (carouselProgress >= 100) carouselProgress = 100;
+            carouselProgressBar.style.width = carouselProgress + '%';
+          }, 100);
         }
-      });
+      }
 
-      window.scrollToSlideshow = function() {
-        document.getElementById('slideshow').scrollIntoView({ behavior: 'smooth' });
-      };
+      document.getElementById('carouselPrev').addEventListener('click', () => { carouselGoTo(carouselIdx - 1); carouselStartAuto(); });
+      document.getElementById('carouselNext').addEventListener('click', () => { carouselGoTo(carouselIdx + 1); carouselStartAuto(); });
 
-      // SLIDESHOW
-      const slideshowImages = [
-        { src: '/public/images/publicidad/publicidad1.jpg', title: '' },
-        { src: '/public/images/publicidad/publicidad2.jpg', title: '' },
-        { src: '/public/images/publicidad/publicidad3.jpg', title: '' },
-        { src: '/public/images/publicidad/publicidad4.jpg', title: '' },
-        { src: '/public/images/publicidad/publicidad5.jpg', title: '' },
-        { src: '/public/images/publicidad/publicidad6.jpg', title: '' },
-        { src: '/public/images/publicidad/publicidad7.jpg', title: '' },
-        { src: '/public/images/publicidad/publicidad8.jpg', title: '' },
-        { src: '/public/images/publicidad/publicidad9.jpg', title: '' },
-        { src: '/public/images/publicidad/publicidad10.jpg', title: '' }
+      buildCarousel();
+
+      // ============================================
+      // COLLAGE - DETECCIÓN CORREGIDA
+      // ============================================
+      // ============================================
+      // COLLAGE - DETECCIÓN OPTIMIZADA
+      // ============================================
+      const COLLAGE_FOLDER = 'images/collage/';
+      let allImages = [];
+      let showingAll = false;
+      let currentImages = [];
+      
+      const collageGrid = document.getElementById('collageGrid');
+      const btnVerTodoContainer = document.getElementById('btnVerTodoContainer');
+      const verTodoBtn = document.getElementById('verTodoBtn');
+
+      // Imágenes que ya conocemos (se cargan al instante)
+      const MANIFEST_IMAGES = [
+        "1.png", "2.png", "3.png", "4.png", "6.png", "7.png", "8.png", "9.png", "10.png",
+        "11.png", "12.png", "13.png", "14.png", "15.jpeg", "16.jpeg", "17.jpeg", "18.jpeg", 
+        "19.jpeg", "20.jpeg", "21.jpeg", "22.jpeg", "23.jpeg", "24.jpeg", "25.jpeg", 
+        "26.jpeg", "27.jpeg", "28.jpeg", "29.jpeg", "30.jpeg", "31.jpeg", "32.jpeg", 
+        "33.jpeg", "34.jpeg", "35.jpeg", "36.jpeg", "37.jpeg", "38.jpeg", "39.jpeg", "40.jpeg"
       ];
 
-      const galleryImages = [
-        { src: '/public/images/publicidad/publicidad11.jpg', title: '' },
-        { src: '/public/images/publicidad/publicidad12.jpg', title: '' },
-        { src: '/public/images/publicidad/publicidad13.jpg', title: '' },
-        { src: '/public/images/publicidad/publicidad14.jpg', title: '' },
-        { src: '/public/images/publicidad/11.jpeg', title: '' },
-        { src: '/public/images/publicidad/12.jpeg', title: '' },
-        { src: '/public/images/publicidad/13.jpeg', title: '' },
-        { src: '/public/images/publicidad/14.jpeg', title: '' },
-        { src: '/public/images/publicidad/18.jpeg', title: '' },
-        { src: '/public/images/publicidad/16.jpeg', title: '' },
-        { src: '/public/images/publicidad/17.jpeg', title: '' },
-        { src: '/public/images/publicidad/19.jpeg', title: '' },
-      ];
+      // Detectar imágenes automáticamente de forma paralela
+      async function detectAllImages() {
+        const foundImages = MANIFEST_IMAGES.map((filename, i) => ({
+          src: `${COLLAGE_FOLDER}${filename}`,
+          title: `Imagen ${filename.split('.')[0]}`,
+          index: filename.split('.')[0]
+        }));
 
-      let currentSlide = 0;
-      let slideshowInterval;
-      const slideshowContainer = document.getElementById('slideshowContainer');
-      const slideshowDots = document.getElementById('slideshowDots');
-      const slideshowThumbnails = document.getElementById('slideshowThumbnails');
-      const prevBtn = document.getElementById('prevBtn');
-      const nextBtn = document.getElementById('nextBtn');
-
-      function createSlideshow() {
-        slideshowContainer.innerHTML = '';
-        slideshowDots.innerHTML = '';
-        slideshowThumbnails.innerHTML = '';
+        const extensions = ['png', 'jpg', 'jpeg', 'webp', 'gif'];
+        const scanLimit = 40; // Buscar hasta el 60 por si hay nuevas
+        const startFrom = 41; // Empezar después de las del manifest
         
-        slideshowImages.forEach((image, index) => {
-          const slide = document.createElement('div');
-          slide.className = `slideshow-slide ${index === 0 ? 'active' : ''}`;
-          slide.innerHTML = `
-            <img src="${image.src}" alt="${image.title}" loading="lazy">
-            <div class="slideshow-caption">${image.title}</div>
+        console.log('🚀 Iniciando escaneo paralelo de nuevas imágenes...');
+        
+        // Función para verificar una sola imagen
+        const checkImage = async (i) => {
+          for (const ext of extensions) {
+            const url = `${COLLAGE_FOLDER}${i}.${ext}`;
+            try {
+              const response = await fetch(url, { method: 'HEAD' });
+              if (response.ok) {
+                return { src: url, title: `Imagen ${i}`, index: i };
+              }
+            } catch(e) {}
+          }
+          return null;
+        };
+
+        // Procesar en bloques para no saturar
+        const batchSize = 10;
+        for (let i = startFrom; i <= scanLimit; i += batchSize) {
+          const promises = [];
+          for (let j = i; j < i + batchSize && j <= scanLimit; j++) {
+            promises.push(checkImage(j));
+          }
+          
+          const results = await Promise.all(promises);
+          const newBatch = results.filter(img => img !== null);
+          
+          if (newBatch.length > 0) {
+            foundImages.push(...newBatch);
+          } else if (i > startFrom + 20) {
+            // Si después de buscar 20 números más no hay nada, paramos
+            break;
+          }
+        }
+        
+        return foundImages;
+      }
+
+      // Renderizar el collage
+      function renderCollage() {
+        collageGrid.innerHTML = '';
+        
+        if (currentImages.length === 0) {
+          collageGrid.innerHTML = `
+            <div style="text-align: center; padding: 50px; grid-column: 1/-1;">
+              <i class="fas fa-folder-open" style="font-size: 3rem; color: #EF0315; opacity: 0.5;"></i>
+              <p style="margin-top: 20px;">No se encontraron imágenes en ${COLLAGE_FOLDER}</p>
+            </div>
           `;
-          slideshowContainer.appendChild(slide);
-          
-          const dot = document.createElement('div');
-          dot.className = `slideshow-dot ${index === 0 ? 'active' : ''}`;
-          dot.dataset.index = index;
-          dot.addEventListener('click', () => goToSlide(index));
-          slideshowDots.appendChild(dot);
-          
-          const thumbnail = document.createElement('div');
-          thumbnail.className = `thumbnail ${index === 0 ? 'active' : ''}`;
-          thumbnail.dataset.index = index;
-          thumbnail.innerHTML = `<img src="${image.src}" alt="${image.title}">`;
-          thumbnail.addEventListener('click', () => goToSlide(index));
-          slideshowThumbnails.appendChild(thumbnail);
+          btnVerTodoContainer.style.display = 'none';
+          return;
+        }
+        
+        currentImages.forEach((img, idx) => {
+          const item = document.createElement('div');
+          item.className = 'collage-item';
+          item.innerHTML = `
+            <img src="${img.src}" alt="${img.title}" loading="lazy">
+            <div class="collage-overlay"><h3>${img.title}</h3></div>
+          `;
+          item.addEventListener('click', () => openImageModal(img.src, img.title));
+          collageGrid.appendChild(item);
         });
         
-        startSlideshow();
+        // Actualizar botón "Ver todas"
+        if (allImages.length > 10) {
+          btnVerTodoContainer.style.display = 'flex';
+          verTodoBtn.innerHTML = showingAll 
+            ? '<i class="fas fa-eye-slash"></i> Ver menos' 
+            : `<i class="fas fa-images"></i> Ver todas las imágenes (${allImages.length})`;
+        } else {
+          btnVerTodoContainer.style.display = 'none';
+        }
       }
-      
-      function goToSlide(index) {
-        const slides = document.querySelectorAll('.slideshow-slide');
-        const dots = document.querySelectorAll('.slideshow-dot');
-        const thumbnails = document.querySelectorAll('.thumbnail');
-        
-        slides.forEach(slide => slide.classList.remove('active'));
-        dots.forEach(dot => dot.classList.remove('active'));
-        thumbnails.forEach(thumb => thumb.classList.remove('active'));
-        
-        slides[index].classList.add('active');
-        dots[index].classList.add('active');
-        thumbnails[index].classList.add('active');
-        
-        currentSlide = index;
-        
-        clearInterval(slideshowInterval);
-        startSlideshow();
-      }
-      
-      function nextSlide() {
-        goToSlide((currentSlide + 1) % slideshowImages.length);
-      }
-      
-      function prevSlide() {
-        goToSlide((currentSlide - 1 + slideshowImages.length) % slideshowImages.length);
-      }
-      
-      function startSlideshow() {
-        slideshowInterval = setInterval(nextSlide, 5000);
-      }
-      
-      prevBtn.addEventListener('click', prevSlide);
-      nextBtn.addEventListener('click', nextSlide);
-      
-      createSlideshow();
 
-      // GALERÍA ADICIONAL
-      const galleryGrid = document.getElementById('galleryGrid');
-      
-      galleryImages.forEach((image) => {
-        const galleryItem = document.createElement('div');
-        galleryItem.className = 'gallery-item';
-        galleryItem.innerHTML = `
-          <img src="${image.src}" alt="${image.title}" loading="lazy">
-          <div class="gallery-overlay"><h3>${image.title}</h3></div>
-        `;
-        galleryItem.addEventListener('click', () => {
-          openImageModal(image.src, image.title);
-        });
-        galleryGrid.appendChild(galleryItem);
-      });
+      function showFirst10() {
+        showingAll = false;
+        currentImages = allImages.slice(0, 10);
+        renderCollage();
+      }
 
+      function showAllImages() {
+        showingAll = true;
+        currentImages = [...allImages];
+        renderCollage();
+      }
+
+      function toggleShowAll() {
+        if (showingAll) showFirst10();
+        else showAllImages();
+      }
+
+      async function loadCollageImages() {
+        // Carga inicial rápida con el manifest
+        allImages = MANIFEST_IMAGES.map(filename => ({
+          src: `${COLLAGE_FOLDER}${filename}`,
+          title: `Imagen ${filename.split('.')[0]}`,
+          index: filename.split('.')[0]
+        }));
+        
+        console.log(`✅ Carga instantánea: ${allImages.length} imágenes`);
+        showFirst10();
+        
+        // Escaneo en segundo plano para nuevas imágenes
+        const detected = await detectAllImages();
+        if (detected.length > allImages.length) {
+          console.log(`✨ Se detectaron nuevas imágenes: ${detected.length - allImages.length}`);
+          allImages = detected;
+          if (!showingAll) showFirst10();
+          else showAllImages();
+        }
+      }
+      
+      if (verTodoBtn) verTodoBtn.addEventListener('click', toggleShowAll);
+      
       // MODAL
       const imageModal = document.getElementById('imageModal');
       const modalImage = document.getElementById('modalImage');
@@ -1427,73 +1386,35 @@
       }
 
       closeModalBtn.addEventListener('click', closeImageModal);
+      imageModal.addEventListener('click', (e) => { if (e.target === imageModal) closeImageModal(); });
       
-      imageModal.addEventListener('click', function(e) {
-        if (e.target === imageModal) closeImageModal();
-      });
-      
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && imageModal.classList.contains('active')) {
-          closeImageModal();
-        }
-      });
-
       // MAPA
-      const ubicacion = [19.683913, -98.876015];
-      const map = L.map('map').setView(ubicacion, 15);
-      
+      const map = L.map('map').setView([19.683913, -98.876015], 15);
       L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; OpenStreetMap &copy; CARTO',
         subdomains: 'abcd',
         maxZoom: 19
       }).addTo(map);
       
-      const icono = L.icon({
-        iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png',
-        iconSize: [45, 45],
-        iconAnchor: [22, 45],
-        popupAnchor: [0, -45]
-      });
-      
-      L.marker(ubicacion, { icon: icono }).addTo(map).bindPopup(`
-        <div style="text-align:center; font-size:14px; line-height:1.4; padding: 15px;">
-          <strong style="color:#EF0315; font-size:16px;">TUBCON S.A. de C.V.</strong><br><br>
-          <i class="fas fa-map-marker-alt" style="color:#EF0315;"></i> 
-          <strong>Avenida México No. Puxtla 25</strong><br>
+      L.marker([19.683913, -98.876015], {
+        icon: L.icon({ iconUrl: 'https://cdn-icons-png.flaticon.com/512/684/684908.png', iconSize: [45, 45], iconAnchor: [22, 45], popupAnchor: [0, -45] })
+      }).addTo(map).bindPopup(`
+        <div style="text-align:center;">
+          <strong style="color:#EF0315;">TUBCON S.A. de C.V.</strong><br>
+          Avenida México No. Puxtla 25<br>
           Teotihuacán Centro, 55805<br>
-          Teotihuacán de Arista, Estado de México<br><br>
-          <i class="fas fa-phone" style="color:#EF0315;"></i> 55-43-22-51-89
+          Tel: 55-43-22-51-89
         </div>
       `).openPopup();
 
-      // ============================================
-      // REPRODUCCIÓN AUTOMÁTICA DE TODOS LOS VIDEOS
-      // ============================================
-      function playAllVideos() {
-        const allVideos = document.querySelectorAll('video');
-        allVideos.forEach(video => {
-          video.muted = true;
-          video.play().catch(e => {
-            console.log('Autoplay bloqueado para:', video);
-            video.controls = true;
-          });
-        });
-      }
-
-      playAllVideos();
-      setTimeout(playAllVideos, 1000);
+      // VIDEOS
+      document.querySelectorAll('video').forEach(video => {
+        video.muted = true;
+        video.play().catch(() => {});
+      });
       
-    });
-
-    // PRELOADER
-    window.addEventListener('load', function() {
-      setTimeout(function() {
-        const preloader = document.getElementById('preloader-container');
-        preloader.classList.add('fade-out');
-        setTimeout(function() {
-          preloader.style.display = 'none';
-        }, 500);
-      }, 1000);
+      // Iniciar carga del collage
+      loadCollageImages();
     });
   </script>
 </body>
